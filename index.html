@@ -55,6 +55,7 @@
         .cal-date { font-size: 0.8rem; font-weight: 800; color: #431407; margin-bottom: 0.25rem; }
         .cal-task { font-size: 0.65rem; padding: 0.35rem; border-radius: 4px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; border-left: 3px solid #f97316; font-weight: 700;}
 
+        /* EISENHOWER 2x2 COMPACT GRID */
         .eh-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; height: calc(100vh - 200px); min-height: 600px;}
         @media (max-width: 768px) { .eh-grid { grid-template-columns: 1fr; height: auto; } }
         .eh-box { border-radius: 1rem; padding: 1rem; border: 1px solid #ffedd5; box-shadow: inset 0 2px 10px rgba(0,0,0,0.02); display: flex; flex-direction: column;}
@@ -66,6 +67,7 @@
         .eh-card { background: white; padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 0.5rem; border: 1px solid #e2e8f0; cursor: pointer; transition: transform 0.1s;}
         .eh-card:hover { transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
 
+        /* Rich Text Editor Styling */
         .prose-custom { outline: none; }
         .prose-custom p { margin-bottom: 0.75em; }
         .prose-custom ul { list-style-type: disc; padding-left: 1.5em; margin-bottom: 0.75em; }
@@ -99,13 +101,13 @@
                     <label class="block text-[10px] font-extrabold text-orange-800 mb-2 uppercase tracking-widest">Đăng Nhập Vị Trí Của Bạn</label>
                     <select id="loginRole" class="w-full border-2 border-orange-200 bg-orange-50 rounded-xl px-4 py-3 outline-none font-black text-orange-950 focus:border-orange-500 transition" onchange="checkLoginRole()">
                         <option value="" disabled selected>-- Chọn Role --</option>
-                        <option value="CEO">👑 CEO</option>
+                        <option value="CEO">👑 CEO </option>
                         <option value="LEAD_TEAM_1">📍 LEAD_TEAM_1</option>
                         <option value="LEAD_TEAM_2">📍 LEAD_TEAM_2</option>
                         <option value="LEAD_TEAM_3">📍 LEAD_TEAM_3</option>
-                        <option value="DESIGN_ADMIN">🎨 DESIGN_ADMIN</option>
-                        <option value="KEY_TEACHER">📚 KEY_TEACHER</option>
-                        <option value="ACCOUNTING">💰 ACCOUNTING</option>
+                        <option value="DEV">🎨 DEV</option>
+                        <option value="Staff_1">📚 Staff_1</option>
+                        <option value="STAFF_2">💰 STAFF_2</option>
                     </select>
                 </div>
                 <div id="pinContainer" class="hidden">
@@ -195,6 +197,14 @@
 
         <div class="flex-1 overflow-y-auto w-full relative" id="pdf-content">
             
+            <div id="syncReminder" class="bg-blue-50 border-l-4 border-blue-500 p-3 mx-4 md:mx-8 mt-4 rounded-r shadow-sm flex justify-between items-center transition-all duration-300">
+                <div class="flex items-center">
+                    <span class="text-xl mr-3">💡</span>
+                    <p class="text-xs md:text-sm text-blue-800 font-bold">Mẹo vận hành: <span class="font-medium">Hãy nhớ bấm nút <b class="text-orange-600">ĐỒNG BỘ CLOUD ☁️</b> ở menu trái để hệ thống cập nhật tiến độ mới nhất nhé!</span></p>
+                </div>
+                <button onclick="document.getElementById('syncReminder').classList.add('hidden')" class="text-blue-400 hover:text-blue-600 font-black px-2">✕</button>
+            </div>
+
             <div class="p-4 md:p-8">
                 <div id="dashboard" class="tab-content active">
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
@@ -250,7 +260,7 @@
                             <select id="workspaceRoleFilter" onchange="renderAllViews()" class="w-full md:w-auto bg-slate-50 border-none rounded-lg px-4 py-2 text-sm font-bold text-orange-900 outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer disabled:opacity-50">
                                 <option value="ALL">👤 Lọc Role Quản lý</option>
                                 <option value="CEO">CEO</option><option value="LEAD_TEAM_1">LEAD_TEAM_1</option><option value="LEAD_TEAM_2">LEAD_TEAM_2</option><option value="LEAD_TEAM_3">LEAD_TEAM_3</option>
-                                <option value="DESIGN_ADMIN">DESIGN_ADMIN</option><option value="KEY_TEACHER">KEY_TEACHER</option><option value="ACCOUNTING">ACCOUNTING</option>
+                                <option value="DEV">DEV</option><option value="Staff_1">Staff_1</option><option value="STAFF_2">STAFF_2</option>
                             </select>
                             <select id="workspaceTagFilter" onchange="renderAllViews()" class="hidden md:block w-auto bg-slate-50 border-none rounded-lg px-4 py-2 text-sm font-bold outline-none text-slate-700 focus:ring-2 focus:ring-orange-500">
                                 <option value="ALL">🎯 Lọc Tag Chiến lược</option><option value="Tăng Trưởng Doanh Thu">Tăng Trưởng Doanh Thu</option><option value="Quản Trị Rủi Ro & Chất Lượng">Quản Trị Rủi Ro</option><option value="Chuẩn Hóa Hệ Thống">Chuẩn Hóa Hệ Thống</option>
@@ -380,8 +390,8 @@
                                         <option value="" disabled selected>-- Chọn Role --</option>
                                         <option value="CEO">CEO</option>
                                         <option value="LEAD_TEAM_1">LEAD_TEAM_1</option><option value="LEAD_TEAM_2">LEAD_TEAM_2</option><option value="LEAD_TEAM_3">LEAD_TEAM_3</option>
-                                        <option value="DESIGN_ADMIN">DESIGN_ADMIN</option><option value="KEY_TEACHER">KEY_TEACHER</option>
-                                        <option value="ACCOUNTING">ACCOUNTING</option>
+                                        <option value="DEV">DEV</option><option value="Staff_1">Staff_1</option>
+                                        <option value="STAFF_2">STAFF_2</option>
                                     </select>
                                 </div>
                                 <div><label class="block text-[10px] md:text-xs font-extrabold text-slate-800 mb-1 md:mb-2">Người phụ trách (Owner)</label><input type="text" id="taskOwner" class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm outline-none font-bold focus:border-orange-500" placeholder="VD: Dung, Thu..."></div>
@@ -485,8 +495,9 @@
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKBLJ2hVoBXQ17EtRLkanZgrgTVNAbLU4sctfAfcgEYM-XRoJUsJE2aNnXN5GmpAdp/exec";
 
         // --- 0. SECURITY & CONFIG ---
-        const PIN_MAP = { "CEO": "8888", "LEAD_TEAM_1": "1111", "LEAD_TEAM_2": "2222", "LEAD_TEAM_3": "3333", "DESIGN_ADMIN": "4444", "KEY_TEACHER": "5555", "ACCOUNTING": "6666" };
+        const PIN_MAP = { "CEO": "8888", "LEAD_TEAM_1": "1111", "LEAD_TEAM_2": "2222", "LEAD_TEAM_3": "3333", "DEV": "4444", "Staff_1": "5555", "STAFF_2": "6666" };
         let currentUserRole = null;
+        let hasSeenReminder = false;
         let companySOP = localStorage.getItem('sunbot_core_sop_v3') || `<h3 class="text-xl font-bold text-orange-600 mb-4">CẨM NANG VẬN HÀNH SUNBOT</h3>\n<p><b>1. Quy định chung:</b></p>\n<ul>\n  <li>Cập nhật tiến độ trên App trước 17h00 thứ 6.</li>\n  <li>Bấm nút Đồng bộ Cloud sau khi cập nhật công việc.</li>\n</ul>\n<p><b>2. Biểu mẫu chuẩn:</b></p>\n<ul>\n  <li><a href="#" target="_blank" style="color:#ea580c; font-weight:bold; text-decoration:underline;">Mẫu Kế hoạch Tài chính</a></li>\n</ul>`;
 
         function checkLoginRole() { const role = document.getElementById('loginRole').value; const pinCtn = document.getElementById('pinContainer'); if(role) { pinCtn.classList.remove('hidden'); pinCtn.classList.remove('opacity-0'); } }
@@ -495,6 +506,9 @@
             const role = document.getElementById('loginRole').value; if(!role) return showToast("Vui lòng chọn Vị trí!");
             const pin = document.getElementById('loginPin').value; if(pin !== PIN_MAP[role]) return showToast("⛔ Mã PIN không đúng!");
             currentUserRole = role; document.getElementById('loginOverlay').classList.add('hidden-role'); applyPermissions();
+            
+            // Show Reminder if not seen
+            if(!hasSeenReminder) { document.getElementById('syncReminder').classList.remove('hidden'); hasSeenReminder = true; }
         }
 
         function processLogout() {
@@ -526,8 +540,8 @@
         let currentCalendarMonth = todayObj.getMonth(); let currentCalendarYear = todayObj.getFullYear();
 
         const defaultTasks = [
-            { id: "SB-001", role: "LEAD_TEAM_1", owner: "Dung", strategy: "Quản Trị Rủi Ro & Chất Lượng", priority: "Khẩn cấp", name: "Chốt báo cáo vận hành tháng", due: "2026-03-25", status: "Đang làm", isIncident: false, approval: "Chưa nộp", drive: "", notes: "", archived: false, checklist: [{text:"Chốt file data", done:true}], revisionCount: 0, lastUpdated: Date.now() },
-            { id: "SB-002", role: "LEAD_TEAM_2", owner: "Thu", strategy: "Tăng Trưởng Doanh Thu", priority: "Cao", name: "Chạy chiến dịch Event Hè", due: "2026-03-20", status: "Kế hoạch", isIncident: false, approval: "Chưa nộp", drive: "", notes: "", archived: false, checklist: [{text:"Lên danh sách", done:false}], revisionCount: 1, lastUpdated: Date.now() }
+            { id: "SB-001", role: "LEAD_TEAM_1", owner: "Dung", strategy: "Quản Trị Rủi Ro & Chất Lượng", priority: "Khẩn cấp", name: "Chốt báo cáo vận hành tháng", due: "2026-03-25", status: "Đang làm", isIncident: false, approval: "Chưa nộp", drive: "", notes: "", archived: false, deleted: false, checklist: [{text:"Chốt file data", done:true}], revisionCount: 0, lastUpdated: Date.now() },
+            { id: "SB-002", role: "LEAD_TEAM_2", owner: "Thu", strategy: "Tăng Trưởng Doanh Thu", priority: "Cao", name: "Chạy chiến dịch Event Hè", due: "2026-03-20", status: "Kế hoạch", isIncident: false, approval: "Chưa nộp", drive: "", notes: "", archived: false, deleted: false, checklist: [{text:"Lên danh sách", done:false}], revisionCount: 1, lastUpdated: Date.now() }
         ];
         const defaultTemplates = [{ role: "LEAD_TEAM_1", name: "Chốt báo cáo vận hành" }, { role: "LEAD_TEAM_2", name: "Kế hoạch chạy chiến dịch" }];
 
@@ -535,14 +549,8 @@
         let templates = JSON.parse(localStorage.getItem('sunbot_x10_templates')) || defaultTemplates;
         let activeChecklist = [];
 
-        document.addEventListener('DOMContentLoaded', () => { document.getElementById('currentDate').textContent = todayObj.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }); });
-        
-        function saveToDB() { 
-            localStorage.setItem('sunbot_x10_tasks', JSON.stringify(tasks)); 
-            localStorage.setItem('sunbot_x10_templates', JSON.stringify(templates)); 
-            localStorage.setItem('sunbot_core_sop_v3', companySOP); 
-            renderAllViews(); renderSOP(); 
-        }
+        document.addEventListener('DOMContentLoaded', () => { document.getElementById('currentDate').textContent = todayObj.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }); document.getElementById('syncReminder').classList.add('hidden'); });
+        function saveToDB() { localStorage.setItem('sunbot_x10_tasks', JSON.stringify(tasks)); localStorage.setItem('sunbot_x10_templates', JSON.stringify(templates)); localStorage.setItem('sunbot_core_sop_v3', companySOP); renderAllViews(); renderSOP(); }
 
         // --- 2. CLOUD SYNC LOGIC ---
         async function syncWithCloud() {
@@ -647,7 +655,8 @@
 
         // --- 5. PERFORMANCE DASHBOARD ---
         function renderPerformance() {
-            let baseTasks = tasks; if(currentUserRole !== 'CEO') baseTasks = tasks.filter(t => t.role === currentUserRole);
+            let baseTasks = tasks.filter(t => !t.deleted);
+            if(currentUserRole !== 'CEO') baseTasks = baseTasks.filter(t => t.role === currentUserRole);
             const activeKPI = baseTasks.filter(t => !t.archived);
             const total = activeKPI.length; const done = activeKPI.filter(t => t.status === 'Hoàn thành').length; const overdue = activeKPI.filter(t => t.status === 'Quá hạn' || (!t.archived && t.status !== 'Hoàn thành' && t.due < todayStr)).length; const reviseCount = activeKPI.reduce((sum, t) => sum + (t.revisionCount || 0), 0);
             let onTimeRate = 0; if(total > 0) { const onTime = total - overdue; onTimeRate = Math.round((onTime / total) * 100); }
@@ -658,11 +667,13 @@
 
         // --- 6. RENDERERS ---
         function renderAllViews() {
-            tasks.forEach(t => { if(!t.archived && !t.isIncident && t.status !== 'Hoàn thành' && t.due < todayStr) t.status = 'Quá hạn'; });
+            tasks.forEach(t => { if(!t.archived && !t.deleted && !t.isIncident && t.status !== 'Hoàn thành' && t.due < todayStr) t.status = 'Quá hạn'; });
             const search = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : ''; 
             const fRole = document.getElementById('workspaceRoleFilter') ? document.getElementById('workspaceRoleFilter').value : 'ALL';
             const fTag = document.getElementById('workspaceTagFilter') ? document.getElementById('workspaceTagFilter').value : 'ALL';
-            let baseTasks = tasks; if(currentUserRole !== 'CEO') baseTasks = tasks.filter(t => t.role === currentUserRole);
+            
+            let baseTasks = tasks.filter(t => !t.deleted); 
+            if(currentUserRole !== 'CEO') baseTasks = baseTasks.filter(t => t.role === currentUserRole);
             const activeKPI = baseTasks.filter(t => !t.archived);
 
             let wsTasks = activeKPI.filter(t => {
@@ -747,7 +758,8 @@
         }
 
         function renderEisenhower() {
-            let taskSet = tasks; if(currentUserRole !== 'CEO') taskSet = tasks.filter(t => t.role === currentUserRole);
+            let taskSet = tasks.filter(t => !t.deleted); 
+            if(currentUserRole !== 'CEO') taskSet = taskSet.filter(t => t.role === currentUserRole);
             let active = taskSet.filter(t => !t.archived && t.status !== 'Hoàn thành');
             const q1=[], q2=[], q3=[], q4=[];
             const isUrgent = (due) => { const d = new Date(due).getTime(); const n = todayObj.getTime(); return ((d - n) / (1000*60*60*24)) <= 3; };
@@ -822,9 +834,15 @@
 
         function deleteTask() {
             const id = document.getElementById('taskId').value; if (!id) return;
-            if (confirm("⚠️ BẠN CÓ CHẮC CHẮN MUỐN XÓA CÔNG VIỆC NÀY?\n\nHành động này sẽ xóa vĩnh viễn dữ liệu và không thể hoàn tác!")) {
+            if (confirm("⚠️ BẠN CÓ CHẮC CHẮN MUỐN XÓA CÔNG VIỆC NÀY?\n\nHành động này sẽ xóa vĩnh viễn trên mọi thiết bị và không thể hoàn tác!")) {
                 const idx = tasks.findIndex(t => t.id === id);
-                if (idx > -1) { tasks.splice(idx, 1); saveToDB(); closeModal(); showToast("🗑️ Đã xóa công việc thành công!"); }
+                if (idx > -1) { 
+                    tasks[idx].deleted = true; // Xóa Mềm (Tombstone)
+                    tasks[idx].lastUpdated = Date.now(); // Cập nhật timestamp để Cloud biết
+                    saveToDB(); 
+                    closeModal(); 
+                    showToast("🗑️ Đã xóa công việc thành công!"); 
+                }
             }
         }
 
@@ -838,7 +856,7 @@
             const baseTask = {
                 name: name, role: role, owner: document.getElementById('taskOwner').value, notes: document.getElementById('taskNotes').value,
                 priority: document.getElementById('taskPriority').value, strategy: document.getElementById('taskStrategy').value, due: document.getElementById('taskDue').value, status: document.getElementById('taskStatus').value, 
-                isIncident: document.getElementById('taskIncident').checked, approval: document.getElementById('taskApproval').value, drive: document.getElementById('taskDrive').value, archived: false, checklist: [...activeChecklist], revisionCount: parseInt(document.getElementById('taskRevisionCount').value) || 0, lastUpdated: Date.now()
+                isIncident: document.getElementById('taskIncident').checked, approval: document.getElementById('taskApproval').value, drive: document.getElementById('taskDrive').value, archived: false, deleted: false, checklist: [...activeChecklist], revisionCount: parseInt(document.getElementById('taskRevisionCount').value) || 0, lastUpdated: Date.now()
             };
 
             if(id) { 
@@ -860,7 +878,7 @@
 
         function editTask(id) {
             const t = tasks.find(x => x.id === id); if(!t) return;
-            if(currentUserRole !== 'CEO' && t.role !== currentUserRole) return showToast("⛔ Bạn không quản lý Vị trí này.");
+            if(currentUserRole !== 'CEO' && t.role !== currentUserRole) return showToast("⛔ Chặn: Bạn không quản lý Vị trí này.");
             ['Id', 'Name', 'Role', 'Owner', 'Priority', 'Strategy', 'Due', 'Status', 'Approval', 'Drive', 'Notes'].forEach(f => { const el = document.getElementById('task' + f); if(el) el.value = t[f.toLowerCase()] || ''; });
             if(!t.priority) document.getElementById('taskPriority').value = 'Bình thường';
             document.getElementById('taskIncident').checked = t.isIncident || false; if(document.getElementById('saveAsTemplate')) document.getElementById('saveAsTemplate').checked = false;
@@ -897,7 +915,7 @@
                 document.getElementById('aiInputArea').classList.add('hidden'); document.getElementById('aiStagingArea').classList.remove('hidden'); document.getElementById('aiStagingArea').classList.add('flex');
                 let html = '';
                 stagedAITasks.forEach((t, i) => {
-                    html += `<tr class="border-b border-slate-100 hover:bg-orange-50/30"><td class="px-3 py-3 text-center"><input type="checkbox" id="stage_chk_${i}" checked onchange="updateStageCount()" class="w-4 h-4 text-orange-600 rounded cursor-pointer"></td><td class="px-3 py-3"><input type="text" id="stage_name_${i}" value="${t.name || ''}" class="w-full border border-slate-200 rounded-lg px-2 py-1.5 text-xs font-bold outline-none focus:border-orange-500"></td><td class="px-3 py-3"><select id="stage_role_${i}" class="w-full border border-slate-200 rounded-lg px-2 py-1.5 text-xs outline-none bg-white font-bold text-orange-900"><option value="LEAD_TEAM_1" ${t.role==='LEAD_TEAM_1'?'selected':''}>LEAD_TEAM_1</option><option value="LEAD_TEAM_2" ${t.role==='LEAD_TEAM_2'?'selected':''}>LEAD_TEAM_2</option><option value="LEAD_TEAM_3" ${t.role==='LEAD_TEAM_3'?'selected':''}>LEAD_TEAM_3</option><option value="DESIGN_ADMIN" ${t.role==='DESIGN_ADMIN'?'selected':''}>DESIGN_ADMIN</option><option value="KEY_TEACHER" ${t.role==='KEY_TEACHER'?'selected':''}>KEY_TEACHER</option><option value="ACCOUNTING" ${t.role==='ACCOUNTING'?'selected':''}>ACCOUNTING</option><option value="CEO" ${t.role==='CEO'?'selected':''}>CEO</option></select></td><td class="px-3 py-3"><input type="text" id="stage_owner_${i}" value="${t.owner || ''}" class="w-24 border border-slate-200 rounded-lg px-2 py-1.5 text-xs outline-none font-bold"></td><td class="px-3 py-3"><input type="date" id="stage_due_${i}" value="${t.due || todayStr}" class="w-full border border-slate-200 rounded-lg px-2 py-1.5 text-xs outline-none font-bold"></td></tr>`;
+                    html += `<tr class="border-b border-slate-100 hover:bg-orange-50/30"><td class="px-3 py-3 text-center"><input type="checkbox" id="stage_chk_${i}" checked onchange="updateStageCount()" class="w-4 h-4 text-orange-600 rounded cursor-pointer"></td><td class="px-3 py-3"><input type="text" id="stage_name_${i}" value="${t.name || ''}" class="w-full border border-slate-200 rounded-lg px-2 py-1.5 text-xs font-bold outline-none focus:border-orange-500"></td><td class="px-3 py-3"><select id="stage_role_${i}" class="w-full border border-slate-200 rounded-lg px-2 py-1.5 text-xs outline-none bg-white font-bold text-orange-900"><option value="LEAD_TEAM_1" ${t.role==='LEAD_TEAM_1'?'selected':''}>LEAD_TEAM_1</option><option value="LEAD_TEAM_2" ${t.role==='LEAD_TEAM_2'?'selected':''}>LEAD_TEAM_2</option><option value="LEAD_TEAM_3" ${t.role==='LEAD_TEAM_3'?'selected':''}>LEAD_TEAM_3</option><option value="DEV" ${t.role==='DEV'?'selected':''}>DEV</option><option value="Staff_1" ${t.role==='Staff_1'?'selected':''}>Staff_1</option><option value="STAFF_2" ${t.role==='STAFF_2'?'selected':''}>STAFF_2</option><option value="CEO" ${t.role==='CEO'?'selected':''}>CEO</option></select></td><td class="px-3 py-3"><input type="text" id="stage_owner_${i}" value="${t.owner || ''}" class="w-24 border border-slate-200 rounded-lg px-2 py-1.5 text-xs outline-none font-bold"></td><td class="px-3 py-3"><input type="date" id="stage_due_${i}" value="${t.due || todayStr}" class="w-full border border-slate-200 rounded-lg px-2 py-1.5 text-xs outline-none font-bold"></td></tr>`;
                 }); document.getElementById('stagingTableBody').innerHTML = html; updateStageCount();
             } catch (err) { showToast("⛔ Lỗi JSON. Yêu cầu xuất chuẩn Array."); }
         }
@@ -908,56 +926,14 @@
             let added = 0;
             stagedAITasks.forEach((t, i) => {
                 if(document.getElementById(`stage_chk_${i}`).checked) {
-                    tasks.unshift({ id: `SB-AI-${String(Date.now()).slice(-5)}-${added}`, name: document.getElementById(`stage_name_${i}`).value, role: document.getElementById(`stage_role_${i}`).value, owner: document.getElementById(`stage_owner_${i}`).value, strategy: t.strategy || 'Sự Vụ Hàng Ngày', priority: t.priority || 'Bình thường', due: document.getElementById(`stage_due_${i}`).value, status: "Kế hoạch", isIncident: false, approval: "Chưa nộp", drive: "", notes: "", archived: false, checklist: [], revisionCount: 0, lastUpdated: Date.now() }); added++;
+                    tasks.unshift({ id: `SB-AI-${String(Date.now()).slice(-5)}-${added}`, name: document.getElementById(`stage_name_${i}`).value, role: document.getElementById(`stage_role_${i}`).value, owner: document.getElementById(`stage_owner_${i}`).value, strategy: t.strategy || 'Sự Vụ Hàng Ngày', priority: t.priority || 'Bình thường', due: document.getElementById(`stage_due_${i}`).value, status: "Kế hoạch", isIncident: false, approval: "Chưa nộp", drive: "", notes: "", archived: false, deleted: false, checklist: [], revisionCount: 0, lastUpdated: Date.now() }); added++;
                 }
             }); saveToDB(); closeAIModal(); showToast(`✅ Đã nạp ${added} công việc!`);
         }
 
-        // --- 9. CLOUD SYNC & EXPORT ---
-        async function syncWithCloud() {
-            if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes("DÁN_LINK")) {
-                return showToast("⛔ Lỗi: Chưa gắn Link Web App (Google Script) trong source code!");
-            }
-            
-            const btn = document.getElementById('btnSyncCloud');
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = `<span class="menu-icon mr-2 animate-spin">⏳</span> <span class="menu-text uppercase tracking-wider">ĐANG TẢI...</span>`;
-            btn.disabled = true;
-
-            try {
-                // 1. PULL từ Cloud
-                const response = await fetch(APPS_SCRIPT_URL);
-                const cloudData = await response.json();
-                
-                // 2. MERGE Dữ liệu
-                let cloudTasks = cloudData.tasks || [];
-                if(cloudData.settings && currentUserRole === 'CEO') companySOP = cloudData.settings; 
-                
-                let uc = 0, nc = 0; 
-                cloudTasks.forEach(inc => { 
-                    const idx = tasks.findIndex(t => t.id === inc.id); 
-                    if(idx > -1) { 
-                        if(!tasks[idx].lastUpdated || inc.lastUpdated > tasks[idx].lastUpdated) { 
-                            tasks[idx] = inc; uc++; 
-                        } 
-                    } else { tasks.push(inc); nc++; } 
-                });
-
-                saveToDB(); 
-                
-                // 3. PUSH lên Cloud
-                const payload = { tasks: tasks, templates: templates, settings: companySOP };
-                await fetch(APPS_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
-
-                showToast(`☁️ Đồng bộ Cloud Xong! (Cập nhật: ${uc} việc, Mới: ${nc} việc)`);
-            } catch (error) {
-                console.error(error); showToast("⛔ Lỗi đồng bộ. Hãy tải File Backup để gửi sếp thay thế!");
-            } finally {
-                btn.innerHTML = originalHTML; btn.disabled = false;
-            }
-        }
-
+        // --- EXPORT & TSV ---
         function exportData() {
+            // Không filter t.deleted ở đây để khi tải/gộp file thủ công cũng sẽ lan truyền lệnh Xóa sang thiết bị khác
             const dataToExport = { tasks: currentUserRole === 'CEO' ? tasks : tasks.filter(t => t.role === currentUserRole), templates: templates, settings: companySOP };
             const a = document.createElement('a'); a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataToExport));
             a.download = `Sunbot_Backup_${currentUserRole}_${todayStr}.json`; document.body.appendChild(a); a.click(); a.remove();
@@ -965,7 +941,7 @@
         
         function exportPerformance() {
             let tsv = "Mã ID\tTên Công Việc\tVị Trí (Role)\tNgười Phụ Trách\tMục Tiêu\tMức Độ\tHạn Chót\tTrạng Thái\tSố Lần Bị Trả Lại\n";
-            tasks.forEach(t => { tsv += `${t.id}\t${t.name}\t${t.role}\t${t.owner}\t${t.strategy}\t${t.priority||'Bình thường'}\t${t.due}\t${t.status}\t${t.revisionCount||0}\n`; });
+            tasks.filter(t => !t.deleted).forEach(t => { tsv += `${t.id}\t${t.name}\t${t.role}\t${t.owner}\t${t.strategy}\t${t.priority||'Bình thường'}\t${t.due}\t${t.status}\t${t.revisionCount||0}\n`; });
             const blob = new Blob([tsv], { type: 'text/tsv;charset=utf-8;' });
             const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `Sunbot_BaoCaoHieuSuat_${todayStr}.tsv`; link.click();
         }
