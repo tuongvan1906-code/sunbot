@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sunbot OS | X10 Management System</title>
+    <title>Sunbot OS | X10 Auto-Sync System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -101,13 +101,13 @@
                     <label class="block text-[10px] font-extrabold text-orange-800 mb-2 uppercase tracking-widest">Đăng Nhập Vị Trí Của Bạn</label>
                     <select id="loginRole" class="w-full border-2 border-orange-200 bg-orange-50 rounded-xl px-4 py-3 outline-none font-black text-orange-950 focus:border-orange-500 transition" onchange="checkLoginRole()">
                         <option value="" disabled selected>-- Chọn Role --</option>
-                        <option value="CEO">👑 CEO </option>
+                        <option value="CEO">👑 CEO</option>
                         <option value="LEAD_TEAM_1">📍 LEAD_TEAM_1</option>
                         <option value="LEAD_TEAM_2">📍 LEAD_TEAM_2</option>
                         <option value="LEAD_TEAM_3">📍 LEAD_TEAM_3</option>
-                        <option value="DEV">🎨 DEV</option>
-                        <option value="Staff_1">📚 Staff_1</option>
-                        <option value="STAFF_2">💰 STAFF_2</option>
+                        <option value="STAFF_1">👤 STAFF_1</option>
+                        <option value="STAFF_2">👤 STAFF_2</option>
+                        <option value="STAFF_3">👤 STAFF_3</option>
                     </select>
                 </div>
                 <div id="pinContainer" class="hidden">
@@ -135,16 +135,17 @@
             <p class="text-[10px] font-black text-orange-700 uppercase tracking-widest mb-3 mt-2 px-2 menu-text">Góc Nhìn Điều Hành</p>
             <button onclick="switchTab('dashboard')" id="btn-dashboard" class="sidebar-item sidebar-active w-full flex items-center px-4 py-3 rounded-xl text-sm"><span class="menu-icon mr-3 text-lg">📈</span> <span class="menu-text">Báo Cáo Tổng Hợp</span></button>
             <button onclick="switchTab('sopHub')" id="btn-sopHub" class="sidebar-item w-full flex items-center px-4 py-3 rounded-xl text-sm"><span class="menu-icon mr-3 text-lg">📚</span> <span class="menu-text">Cẩm Nang Quy Trình</span></button>
-            <button onclick="switchTab('performance')" id="btn-performance" class="sidebar-item w-full flex items-center px-4 py-3 rounded-xl text-sm"><span class="menu-icon mr-3 text-lg">📊</span> <span class="menu-text">Hiệu Suất Quản Lý</span></button>
+            <button onclick="switchTab('performance')" id="btn-performance" class="sidebar-item w-full flex items-center px-4 py-3 rounded-xl text-sm"><span class="menu-icon mr-3 text-lg">📊</span> <span class="menu-text">Hiệu Suất Cá Nhân</span></button>
             <button onclick="switchTab('workspace')" id="btn-workspace" class="sidebar-item w-full flex items-center px-4 py-3 rounded-xl text-sm"><span class="menu-icon mr-3 text-lg">🗂️</span> <span class="menu-text">Không Gian Làm Việc</span></button>
             <button onclick="switchTab('eisenhower')" id="btn-eisenhower" class="sidebar-item w-full flex items-center px-4 py-3 rounded-xl text-sm"><span class="menu-icon mr-3 text-lg">🔲</span> <span class="menu-text">Ma Trận Ưu Tiên</span></button>
-            <button onclick="switchTab('approval')" id="btn-approval" class="sidebar-item w-full flex items-center px-4 py-3 rounded-xl text-sm ceo-only"><span class="menu-icon mr-3 text-lg">✅</span> <span class="menu-text">Duyệt Báo Cáo</span></button>
+            
+            <button onclick="switchTab('approval')" id="btn-approval" class="sidebar-item w-full flex items-center px-4 py-3 rounded-xl text-sm leader-only"><span class="menu-icon mr-3 text-lg">✅</span> <span class="menu-text">Duyệt Báo Cáo</span></button>
 
             <div class="mt-6 pt-4 border-t border-orange-900/50 menu-text">
-                <p class="text-[10px] font-black text-orange-700 uppercase tracking-widest mb-3 px-2">Đồng Bộ Hệ Thống Server</p>
+                <p class="text-[10px] font-black text-orange-700 uppercase tracking-widest mb-3 px-2">Hệ Thống Tự Động</p>
                 <button onclick="openAIModal()" class="w-full flex items-center bg-orange-500/10 hover:bg-orange-500/20 text-orange-300 border border-orange-500/30 px-4 py-2.5 rounded-xl text-xs font-bold transition mb-2 leader-only justify-center"><span class="menu-icon mr-2">🤖</span> <span class="menu-text">Tạo Việc Bằng AI</span></button>
                 
-                <button id="btnSyncCloud" onclick="syncWithCloud()" class="w-full flex items-center btn-primary px-4 py-3.5 rounded-xl text-xs font-black transition mb-2 shadow-lg shadow-orange-600/30 justify-center">
+                <button id="btnSyncCloud" onclick="syncWithCloud(false)" class="w-full flex items-center bg-orange-800 text-orange-200 border border-orange-700 px-4 py-3.5 rounded-xl text-xs font-black transition mb-2 shadow-inner justify-center hover:bg-orange-700">
                     <span class="menu-icon mr-2 text-lg">☁️</span> <span class="menu-text tracking-wider uppercase">Đồng Bộ Cloud</span>
                 </button>
                 
@@ -160,7 +161,7 @@
                 <div class="w-10 h-10 rounded-full border-2 border-orange-500 bg-orange-800 flex items-center justify-center text-white font-black flex-shrink-0" id="userAvatar">U</div>
                 <div class="menu-text overflow-hidden"><p class="text-sm font-black text-white truncate" id="userDisplayName">User</p><p class="text-[9px] text-orange-500 font-bold uppercase tracking-wider truncate" id="userDisplayRole">Role</p></div>
             </div>
-            <button onclick="processLogout()" class="menu-text text-red-400 hover:text-red-300 bg-red-900/30 hover:bg-red-900/50 p-2 rounded-lg transition" title="Lưu & Đăng Xuất"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg></button>
+            <button onclick="processLogout()" class="menu-text text-red-400 hover:text-red-300 bg-red-900/30 hover:bg-red-900/50 p-2 rounded-lg transition" title="Đăng Xuất"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg></button>
         </div>
     </aside>
 
@@ -170,7 +171,10 @@
                 <button onclick="toggleMobileSidebar()" class="md:hidden mr-3 text-orange-800 hover:text-orange-600"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
                 <button onclick="toggleSidebar()" class="hidden md:block mr-4 text-orange-800 bg-orange-50 hover:bg-orange-100 p-2 rounded-lg transition" title="Chế độ Trình chiếu"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
                 <div class="truncate">
-                    <h2 id="pageTitle" class="text-lg md:text-2xl font-black text-orange-950 tracking-tight truncate">Báo Cáo Phân Tích</h2>
+                    <div class="flex items-center space-x-2">
+                        <h2 id="pageTitle" class="text-lg md:text-2xl font-black text-orange-950 tracking-tight truncate">Báo Cáo Phân Tích</h2>
+                        <span id="syncStatusIcon" class="hidden text-green-500 text-xs font-bold bg-green-50 px-2 py-0.5 rounded-full border border-green-200">Đã đồng bộ</span>
+                    </div>
                     <p class="text-[10px] md:text-xs font-bold text-orange-600" id="currentDate"></p>
                 </div>
             </div>
@@ -182,7 +186,7 @@
                     <div class="view-toggle-btn" onclick="switchWorkspaceView('calendar', this)">🗓️ Lịch</div>
                 </div>
                 <button onclick="exportToPDF()" class="hidden md:flex bg-white hover:bg-orange-50 text-orange-800 border border-orange-200 shadow-sm px-4 py-2 md:px-5 md:py-2.5 rounded-xl text-xs md:text-sm font-bold transition items-center">📄 PDF</button>
-                <button onclick="openModal()" class="btn-primary px-3 py-2 md:px-6 md:py-2.5 text-xs md:text-sm flex items-center"><span class="md:mr-2 text-base md:text-lg">+</span> <span class="hidden md:inline">Giao Việc Mới</span></button>
+                <button onclick="openModal()" class="btn-primary px-3 py-2 md:px-6 md:py-2.5 text-xs md:text-sm flex items-center leader-only"><span class="md:mr-2 text-base md:text-lg">+</span> <span class="hidden md:inline">Giao Việc Mới</span></button>
             </div>
         </header>
 
@@ -199,8 +203,8 @@
             
             <div id="syncReminder" class="bg-blue-50 border-l-4 border-blue-500 p-3 mx-4 md:mx-8 mt-4 rounded-r shadow-sm flex justify-between items-center transition-all duration-300">
                 <div class="flex items-center">
-                    <span class="text-xl mr-3">💡</span>
-                    <p class="text-xs md:text-sm text-blue-800 font-bold">Mẹo vận hành: <span class="font-medium">Hãy nhớ bấm nút <b class="text-orange-600">ĐỒNG BỘ CLOUD ☁️</b> ở menu trái để hệ thống cập nhật tiến độ mới nhất nhé!</span></p>
+                    <span class="text-xl mr-3">🚀</span>
+                    <p class="text-xs md:text-sm text-blue-800 font-bold">Hệ thống đã bật chế độ <b class="text-orange-600">Auto-Sync (Tự động đồng bộ)</b>. Các thao tác của bạn sẽ được tự động lưu lên Cloud trong nền.</p>
                 </div>
                 <button onclick="document.getElementById('syncReminder').classList.add('hidden')" class="text-blue-400 hover:text-blue-600 font-black px-2">✕</button>
             </div>
@@ -208,9 +212,9 @@
             <div class="p-4 md:p-8">
                 <div id="dashboard" class="tab-content active">
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
-                        <div class="glass-card p-4 md:p-6 border-l-4 border-orange-800"><p class="text-[9px] md:text-[10px] font-black text-orange-800 uppercase tracking-widest">Tổng Việc</p><p class="text-2xl md:text-4xl font-black text-orange-950 mt-1 md:mt-2" id="kpi-total">0</p></div>
-                        <div class="glass-card p-4 md:p-6 border-l-4 border-orange-500 cursor-pointer hover:-translate-y-1 transition" onclick="switchTab('workspace'); switchWorkspaceView('kanban', document.querySelector('.view-toggle-btn:nth-child(2)'))"><p class="text-[9px] md:text-[10px] font-black text-orange-600 uppercase tracking-widest">Đang Chạy</p><p class="text-2xl md:text-4xl font-black text-orange-600 mt-1 md:mt-2" id="kpi-progress">0</p></div>
-                        <div class="glass-card p-4 md:p-6 border-l-4 border-amber-500 cursor-pointer hover:-translate-y-1 transition" onclick="switchTab('approval')"><p class="text-[9px] md:text-[10px] font-black text-amber-600 uppercase tracking-widest">Chờ Phê Duyệt</p><p class="text-2xl md:text-4xl font-black text-amber-500 mt-1 md:mt-2" id="kpi-pending">0</p></div>
+                        <div class="glass-card p-4 md:p-6 border-l-4 border-orange-800"><p class="text-[9px] md:text-[10px] font-black text-orange-800 uppercase tracking-widest">Tổng Việc Liên Quan</p><p class="text-2xl md:text-4xl font-black text-orange-950 mt-1 md:mt-2" id="kpi-total">0</p></div>
+                        <div class="glass-card p-4 md:p-6 border-l-4 border-orange-500 cursor-pointer hover:-translate-y-1 transition hover:shadow-md" onclick="switchTab('workspace'); switchWorkspaceView('kanban', document.querySelector('.view-toggle-btn:nth-child(2)'))"><p class="text-[9px] md:text-[10px] font-black text-orange-600 uppercase tracking-widest">Đang Chạy</p><p class="text-2xl md:text-4xl font-black text-orange-600 mt-1 md:mt-2" id="kpi-progress">0</p></div>
+                        <div class="glass-card p-4 md:p-6 border-l-4 border-amber-500 cursor-pointer hover:-translate-y-1 transition hover:shadow-md" onclick="switchTab('approval')"><p class="text-[9px] md:text-[10px] font-black text-amber-600 uppercase tracking-widest">Chờ Duyệt Báo Cáo</p><p class="text-2xl md:text-4xl font-black text-amber-500 mt-1 md:mt-2" id="kpi-pending">0</p></div>
                         <div class="glass-card p-4 md:p-6 border-l-4 border-red-600 bg-red-50/50"><p class="text-[9px] md:text-[10px] font-black text-red-600 uppercase tracking-widest">Sự Cố/Hỏng</p><p class="text-2xl md:text-4xl font-black text-red-600 mt-1 md:mt-2 animate-pulse" id="kpi-incident">0</p></div>
                     </div>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -237,16 +241,40 @@
                 <div id="performance" class="tab-content">
                     <div class="flex justify-between items-end mb-6">
                         <div>
-                            <h3 class="text-xl font-black text-orange-950">Chỉ Số Hiệu Quả Quản Lý</h3>
-                            <p class="text-sm text-orange-700">Đánh giá khả năng hoàn thành đúng hạn và chất lượng báo cáo.</p>
+                            <h3 class="text-xl font-black text-orange-950">Chỉ Số Hiệu Quả Cá Nhân</h3>
+                            <p class="text-sm text-orange-700">Đánh giá khả năng hoàn thành đúng hạn. <b class="font-black">Bấm vào các thẻ số liệu để xem chi tiết từng công việc.</b></p>
                         </div>
                         <button onclick="exportPerformance()" class="btn-primary px-4 py-2 text-sm shadow-sm ceo-only">📊 Xuất File Đánh Giá</button>
                     </div>
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
-                        <div class="glass-card p-4 md:p-6 border-l-4 border-orange-800"><p class="text-[9px] md:text-[10px] font-black text-orange-800 uppercase tracking-widest">Tổng Giao</p><p class="text-2xl md:text-4xl font-black text-orange-950 mt-1 md:mt-2" id="perf-total">0</p></div>
-                        <div class="glass-card p-4 md:p-6 border-l-4 border-green-500"><p class="text-[9px] md:text-[10px] font-black text-green-600 uppercase tracking-widest">Xong (On-Time)</p><div class="flex items-end mt-1 md:mt-2"><p class="text-2xl md:text-4xl font-black text-green-600 leading-none" id="perf-done">0</p><span class="text-xs font-bold text-green-500 ml-2 mb-1" id="perf-ontime-rate">(0%)</span></div></div>
-                        <div class="glass-card p-4 md:p-6 border-l-4 border-red-500"><p class="text-[9px] md:text-[10px] font-black text-red-600 uppercase tracking-widest">Trễ/Sự Cố</p><p class="text-2xl md:text-4xl font-black text-red-500 mt-1 md:mt-2" id="perf-overdue">0</p></div>
-                        <div class="glass-card p-4 md:p-6 border-l-4 border-amber-500"><p class="text-[9px] md:text-[10px] font-black text-amber-600 uppercase tracking-widest">Bị Bắt Làm Lại (Revise)</p><p class="text-2xl md:text-4xl font-black text-amber-500 mt-1 md:mt-2" id="perf-revise">0</p></div>
+                        <div class="glass-card p-4 md:p-6 border-l-4 border-orange-800 cursor-pointer hover:-translate-y-1 transition hover:shadow-md" onclick="viewPerformanceTasks('TOTAL')">
+                            <p class="text-[9px] md:text-[10px] font-black text-orange-800 uppercase tracking-widest">Việc Đang Nhận</p><p class="text-2xl md:text-4xl font-black text-orange-950 mt-1 md:mt-2" id="perf-total">0</p>
+                        </div>
+                        <div class="glass-card p-4 md:p-6 border-l-4 border-green-500 cursor-pointer hover:-translate-y-1 transition hover:shadow-md" onclick="viewPerformanceTasks('DONE')">
+                            <p class="text-[9px] md:text-[10px] font-black text-green-600 uppercase tracking-widest">Đã Xong (On-Time)</p>
+                            <div class="flex items-end mt-1 md:mt-2"><p class="text-2xl md:text-4xl font-black text-green-600 leading-none" id="perf-done">0</p><span class="text-xs font-bold text-green-500 ml-2 mb-1" id="perf-ontime-rate">(0%)</span></div>
+                        </div>
+                        <div class="glass-card p-4 md:p-6 border-l-4 border-red-500 cursor-pointer hover:-translate-y-1 transition hover:shadow-md" onclick="viewPerformanceTasks('OVERDUE')">
+                            <p class="text-[9px] md:text-[10px] font-black text-red-600 uppercase tracking-widest">Trễ Hạn/Sự Cố</p><p class="text-2xl md:text-4xl font-black text-red-500 mt-1 md:mt-2" id="perf-overdue">0</p>
+                        </div>
+                        <div class="glass-card p-4 md:p-6 border-l-4 border-amber-500 cursor-pointer hover:-translate-y-1 transition hover:shadow-md" onclick="viewPerformanceTasks('REVISE')">
+                            <p class="text-[9px] md:text-[10px] font-black text-amber-600 uppercase tracking-widest">Bị Bắt Làm Lại (Revise)</p><p class="text-2xl md:text-4xl font-black text-amber-500 mt-1 md:mt-2" id="perf-revise">0</p>
+                        </div>
+                    </div>
+
+                    <div id="perf-task-list-container" class="hidden glass-card mb-8 p-4 md:p-6 border-orange-300 shadow-md">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 id="perf-list-title" class="text-sm md:text-base font-black text-orange-950 uppercase tracking-wider">Danh Sách Công Việc</h3>
+                            <button onclick="document.getElementById('perf-task-list-container').classList.add('hidden')" class="text-slate-400 hover:text-red-500 font-black px-2 text-xl">✕</button>
+                        </div>
+                        <div class="overflow-x-auto w-full border border-slate-100 rounded-lg">
+                            <table class="w-full text-left whitespace-nowrap min-w-[800px]">
+                                <thead class="bg-slate-50 text-orange-900 text-[10px] uppercase tracking-widest font-black border-b-2 border-orange-100">
+                                    <tr><th class="px-4 py-3">Mã ID</th><th class="px-4 py-3">Tên Công Việc</th><th class="px-4 py-3">Người Tạo (Giao Việc)</th><th class="px-4 py-3">Hạn Chót</th><th class="px-4 py-3 text-center">Trạng Thái</th><th class="px-4 py-3 text-center">Số Lần Làm Lại</th></tr>
+                                </thead>
+                                <tbody id="perf-task-list-body" class="divide-y divide-slate-100 text-xs md:text-sm"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -258,9 +286,9 @@
                         </div>
                         <div class="flex space-x-2 w-full md:w-auto">
                             <select id="workspaceRoleFilter" onchange="renderAllViews()" class="w-full md:w-auto bg-slate-50 border-none rounded-lg px-4 py-2 text-sm font-bold text-orange-900 outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer disabled:opacity-50">
-                                <option value="ALL">👤 Lọc Role Quản lý</option>
+                                <option value="ALL">👤 Lọc Role Nhận Việc</option>
                                 <option value="CEO">CEO</option><option value="LEAD_TEAM_1">LEAD_TEAM_1</option><option value="LEAD_TEAM_2">LEAD_TEAM_2</option><option value="LEAD_TEAM_3">LEAD_TEAM_3</option>
-                                <option value="DEV">DEV</option><option value="Staff_1">Staff_1</option><option value="STAFF_2">STAFF_2</option>
+                                <option value="STAFF_1">STAFF_1</option><option value="STAFF_2">STAFF_2</option><option value="STAFF_3">STAFF_3</option>
                             </select>
                             <select id="workspaceTagFilter" onchange="renderAllViews()" class="hidden md:block w-auto bg-slate-50 border-none rounded-lg px-4 py-2 text-sm font-bold outline-none text-slate-700 focus:ring-2 focus:ring-orange-500">
                                 <option value="ALL">🎯 Lọc Tag Chiến lược</option><option value="Tăng Trưởng Doanh Thu">Tăng Trưởng Doanh Thu</option><option value="Quản Trị Rủi Ro & Chất Lượng">Quản Trị Rủi Ro</option><option value="Chuẩn Hóa Hệ Thống">Chuẩn Hóa Hệ Thống</option>
@@ -273,7 +301,7 @@
                             <div class="overflow-x-auto w-full">
                                 <table class="w-full text-left whitespace-nowrap min-w-[800px]">
                                     <thead class="bg-slate-50 text-orange-900 text-[10px] uppercase tracking-widest font-black border-b-2 border-orange-100">
-                                        <tr><th class="px-4 py-4 md:px-6 md:py-5">Mã ID</th><th class="px-4 py-4 md:px-6 md:py-5">Chiến Lược & Công Việc</th><th class="px-4 py-4 md:px-6 md:py-5">Vị Trí & Người làm</th><th class="px-4 py-4 md:px-6 md:py-5 text-center">Tiến Độ Checklist</th><th class="px-4 py-4 md:px-6 md:py-5">Hạn Chót</th><th class="px-4 py-4 md:px-6 md:py-5 text-center">Trạng Thái</th></tr>
+                                        <tr><th class="px-4 py-4 md:px-6 md:py-5">Mã ID</th><th class="px-4 py-4 md:px-6 md:py-5">Chiến Lược & Công Việc</th><th class="px-4 py-4 md:px-6 md:py-5">Vị Trí Nhận Việc</th><th class="px-4 py-4 md:px-6 md:py-5 text-center">Tiến Độ Checklist</th><th class="px-4 py-4 md:px-6 md:py-5">Hạn Chót</th><th class="px-4 py-4 md:px-6 md:py-5 text-center">Trạng Thái</th></tr>
                                     </thead>
                                     <tbody id="master-table-body" class="divide-y divide-slate-100 text-xs md:text-sm"></tbody>
                                 </table>
@@ -333,9 +361,9 @@
                     </div>
                 </div>
 
-                <div id="approval" class="tab-content ceo-only">
+                <div id="approval" class="tab-content leader-only">
                     <div class="glass-card p-0 overflow-hidden border-2 border-orange-300 mb-6 shadow-md">
-                        <div class="bg-gradient-to-r from-orange-500 to-amber-500 p-4 md:p-6 text-white"><h3 class="text-lg md:text-xl font-black mb-1">Quyết Định Của CEO</h3><p class="text-xs md:text-sm font-medium text-orange-50">Bấm "Mở Link Báo Cáo" để kiểm tra minh chứng. Nếu bắt Làm Lại, hệ thống sẽ tự động trừ điểm Hiệu suất của Leader.</p></div>
+                        <div class="bg-gradient-to-r from-orange-500 to-amber-500 p-4 md:p-6 text-white"><h3 class="text-lg md:text-xl font-black mb-1">Duyệt Báo Cáo Nhân Viên</h3><p class="text-xs md:text-sm font-medium text-orange-50">Chỉ hiển thị các báo cáo của những công việc <b class="font-black">do chính bạn giao đi.</b> Bấm "Mở Link Báo Cáo" để kiểm tra minh chứng.</p></div>
                         <div class="p-4 md:p-6 grid grid-cols-1 gap-4 bg-orange-50/30" id="approval-cards-container"></div>
                     </div>
                 </div>
@@ -361,7 +389,6 @@
                     <button type="button" onclick="formatDoc('insertOrderedList')" class="px-3 py-1.5 bg-white border border-slate-300 rounded font-bold text-slate-800 hover:bg-slate-50 shadow-sm">🔢 List Số</button>
                     <button type="button" onclick="formatDoc('insertHorizontalRule')" class="px-3 py-1.5 bg-white border border-slate-300 rounded font-bold text-slate-800 hover:bg-slate-50 shadow-sm">➖ Dòng kẻ</button>
                 </div>
-                
                 <div id="editSopContent" contenteditable="true" class="w-full border-2 border-t-0 border-slate-200 rounded-b-xl p-5 text-sm outline-none focus:border-orange-500 shadow-inner flex-1 bg-white prose-custom overflow-y-auto"></div>
             </div>
             <div class="p-4 bg-white border-t border-slate-200 flex-shrink-0">
@@ -385,16 +412,15 @@
                         <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mb-4">
                                 <div>
-                                    <label class="block text-[10px] md:text-xs font-extrabold text-orange-800 mb-1 md:mb-2">Phòng Ban (ROLE) *</label>
+                                    <label class="block text-[10px] md:text-xs font-extrabold text-orange-800 mb-1 md:mb-2">Giao việc cho Phòng Ban (ROLE) *</label>
                                     <select id="taskRole" required onchange="handleRoleChange()" class="w-full border-2 border-slate-200 bg-slate-50 rounded-lg px-3 py-2 text-sm outline-none font-bold text-slate-800 focus:border-orange-500 transition disabled:opacity-60">
                                         <option value="" disabled selected>-- Chọn Role --</option>
                                         <option value="CEO">CEO</option>
                                         <option value="LEAD_TEAM_1">LEAD_TEAM_1</option><option value="LEAD_TEAM_2">LEAD_TEAM_2</option><option value="LEAD_TEAM_3">LEAD_TEAM_3</option>
-                                        <option value="DEV">DEV</option><option value="Staff_1">Staff_1</option>
-                                        <option value="STAFF_2">STAFF_2</option>
+                                        <option value="STAFF_1">STAFF_1</option><option value="STAFF_2">STAFF_2</option><option value="STAFF_3">STAFF_3</option>
                                     </select>
                                 </div>
-                                <div><label class="block text-[10px] md:text-xs font-extrabold text-slate-800 mb-1 md:mb-2">Người phụ trách (Owner)</label><input type="text" id="taskOwner" class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm outline-none font-bold focus:border-orange-500" placeholder="VD: Dung, Thu..."></div>
+                                <div><label class="block text-[10px] md:text-xs font-extrabold text-slate-800 mb-1 md:mb-2">Người phụ trách cụ thể</label><input type="text" id="taskOwner" class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm outline-none font-bold focus:border-orange-500" placeholder="VD: Dung, Thu..."></div>
                             </div>
                             
                             <div class="mb-4 bg-blue-50/50 p-3 rounded-lg border border-blue-100 hidden" id="templateBox">
@@ -407,7 +433,7 @@
                             <label class="flex items-center space-x-2 cursor-pointer mt-1 mb-4 leader-only bg-slate-50 p-2 border border-slate-200 rounded-lg hover:bg-slate-100 transition"><input type="checkbox" id="saveAsTemplate" class="w-4 h-4 text-orange-600 rounded border-slate-300 cursor-pointer"><span class="text-[10px] font-bold text-slate-700">📌 Lưu tên việc này thành Mẫu (SOP)</span></label>
                             
                             <label class="block text-[10px] md:text-xs font-extrabold text-slate-700 mb-1 md:mb-2">Ghi chú / Mô tả thêm</label>
-                            <textarea id="taskNotes" rows="2" class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-orange-500 font-medium text-slate-700" placeholder="Dán link hướng dẫn, pass giải nén, ghi chú..."></textarea>
+                            <textarea id="taskNotes" rows="2" class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-orange-500 font-medium text-slate-700" placeholder="Dán link hướng dẫn, thông tin chi tiết..."></textarea>
                         </div>
 
                         <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm">
@@ -444,7 +470,7 @@
                             <label class="flex items-center space-x-2 cursor-pointer bg-red-50 border-2 border-red-100 p-2.5 rounded-lg hover:bg-red-100 transition mb-4"><input type="checkbox" id="taskIncident" class="w-4 h-4 md:w-5 md:h-5 text-red-600 rounded cursor-pointer"><span class="text-[10px] md:text-xs font-black text-red-700 uppercase">🚨 Báo Cáo Hỏng/Sự Cố</span></label>
 
                             <label class="block text-[10px] md:text-xs font-extrabold text-amber-700 mb-1 md:mb-2">Quy Trình Duyệt</label>
-                            <select id="taskApproval" class="w-full border-2 border-amber-200 bg-amber-50/50 rounded-lg px-3 py-2 text-xs md:text-sm outline-none font-black text-amber-800 mb-3 focus:border-amber-400"><option value="Chưa nộp">Chưa nộp báo cáo</option><option value="Chờ CEO duyệt">🚀 Đã Nộp (Chờ Duyệt)</option><option value="Đã duyệt" class="ceo-only-option">✅ Đã duyệt xong</option><option value="Làm lại" class="ceo-only-option">🔄 Yêu cầu làm lại</option></select>
+                            <select id="taskApproval" class="w-full border-2 border-amber-200 bg-amber-50/50 rounded-lg px-3 py-2 text-xs md:text-sm outline-none font-black text-amber-800 mb-3 focus:border-amber-400"><option value="Chưa nộp">Chưa nộp báo cáo</option><option value="Chờ CEO duyệt">🚀 Gửi Duyệt</option><option value="Đã duyệt" class="leader-only-option">✅ Đã duyệt xong</option><option value="Làm lại" class="leader-only-option">🔄 Yêu cầu làm lại</option></select>
                             <input type="url" id="taskDrive" placeholder="Link Báo Cáo (Docs/Sheets)..." class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-xs md:text-sm outline-none focus:border-orange-500 font-medium">
                         </div>
                     </div>
@@ -491,14 +517,13 @@
 
     <script>
         // --- 0. CLOUD SYNC SETTINGS ---
-        // TƯỜNG VÂN: HÃY DÁN ĐƯỜNG LINK WEB APP CỦA BẠN VÀO GIỮA 2 DẤU NGOẶC KÉP BÊN DƯỚI
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKBLJ2hVoBXQ17EtRLkanZgrgTVNAbLU4sctfAfcgEYM-XRoJUsJE2aNnXN5GmpAdp/exec";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKBLJ2hVoBXQ17EtRLkanZgrgTVNAbLU4sctfAfcgEYM-XRoJUsJE2aNnXN5GmpAdp/exec"; // <-- Hãy dán link script của bạn vào đây!
 
         // --- 0. SECURITY & CONFIG ---
-        const PIN_MAP = { "CEO": "8888", "LEAD_TEAM_1": "1111", "LEAD_TEAM_2": "2222", "LEAD_TEAM_3": "3333", "DEV": "4444", "Staff_1": "5555", "STAFF_2": "6666" };
+        const PIN_MAP = { "CEO": "8888", "LEAD_TEAM_1": "1111", "LEAD_TEAM_2": "2222", "LEAD_TEAM_3": "3333", "STAFF_1": "4444", "STAFF_2": "5555", "STAFF_3": "6666" };
         let currentUserRole = null;
         let hasSeenReminder = false;
-        let companySOP = localStorage.getItem('sunbot_core_sop_v3') || `<h3 class="text-xl font-bold text-orange-600 mb-4">CẨM NANG VẬN HÀNH SUNBOT</h3>\n<p><b>1. Quy định chung:</b></p>\n<ul>\n  <li>Cập nhật tiến độ trên App trước 17h00 thứ 6.</li>\n  <li>Bấm nút Đồng bộ Cloud sau khi cập nhật công việc.</li>\n</ul>\n<p><b>2. Biểu mẫu chuẩn:</b></p>\n<ul>\n  <li><a href="#" target="_blank" style="color:#ea580c; font-weight:bold; text-decoration:underline;">Mẫu Kế hoạch Tài chính</a></li>\n</ul>`;
+        let companySOP = localStorage.getItem('sunbot_core_sop_v4') || `<h3 class="text-xl font-bold text-orange-600 mb-4">CẨM NANG VẬN HÀNH SUNBOT</h3>\n<p><b>1. Quy định chung:</b></p>\n<ul>\n  <li>Cập nhật tiến độ trên App trước 17h00 thứ 6.</li>\n  <li>Hệ thống đã bật Auto-Sync, không cần gửi file Zalo nữa.</li>\n</ul>`;
 
         function checkLoginRole() { const role = document.getElementById('loginRole').value; const pinCtn = document.getElementById('pinContainer'); if(role) { pinCtn.classList.remove('hidden'); pinCtn.classList.remove('opacity-0'); } }
 
@@ -506,28 +531,37 @@
             const role = document.getElementById('loginRole').value; if(!role) return showToast("Vui lòng chọn Vị trí!");
             const pin = document.getElementById('loginPin').value; if(pin !== PIN_MAP[role]) return showToast("⛔ Mã PIN không đúng!");
             currentUserRole = role; document.getElementById('loginOverlay').classList.add('hidden-role'); applyPermissions();
-            
-            // Show Reminder if not seen
-            if(!hasSeenReminder) { document.getElementById('syncReminder').classList.remove('hidden'); hasSeenReminder = true; }
+            syncWithCloud(true); 
         }
 
         function processLogout() {
-            if(confirm("ĐĂNG XUẤT HỆ THỐNG?\n\nNhớ bấm ĐỒNG BỘ CLOUD (hoặc Tải File Backup) để không mất dữ liệu trước khi thoát nhé!")) { exportData(); }
-            location.reload(); 
+            if(confirm("ĐĂNG XUẤT HỆ THỐNG?\n\nHệ thống đã tự động lưu dữ liệu lên Cloud trong quá trình làm việc.")) { exportData(); location.reload(); }
         }
 
         function applyPermissions() {
-            document.getElementById('userDisplayName').textContent = currentUserRole === 'CEO' ? 'Tường Vân' : 'Quản Lý Cấp Trung';
+            document.getElementById('userDisplayName').textContent = currentUserRole === 'CEO' ? 'Tường Vân
+' : 'Nhân Sự';
             document.getElementById('userDisplayRole').textContent = currentUserRole;
             document.getElementById('userAvatar').textContent = currentUserRole.charAt(0);
             
-            if (currentUserRole !== 'CEO') {
+            // XỬ LÝ ẨN/HIỆN GIAO DIỆN THEO QUYỀN
+            if (currentUserRole === 'CEO') {
+                document.getElementById('appVersionText').textContent = "Master Edition";
+                document.querySelectorAll('.ceo-only, .leader-only').forEach(el => el.classList.remove('hidden-role'));
+            } else if (currentUserRole.includes('LEAD')) {
                 document.getElementById('appVersionText').textContent = "Leader Edition";
-                document.querySelectorAll('.ceo-only').forEach(el => el.classList.add('hidden-role')); document.querySelectorAll('.leader-only').forEach(el => el.classList.remove('hidden-role'));
+                document.querySelectorAll('.ceo-only').forEach(el => el.classList.add('hidden-role')); 
+                document.querySelectorAll('.leader-only').forEach(el => el.classList.remove('hidden-role'));
             } else {
-                document.getElementById('appVersionText').textContent = "Master Edition"; document.querySelectorAll('.ceo-only, .leader-only').forEach(el => el.classList.remove('hidden-role'));
+                document.getElementById('appVersionText').textContent = "Staff Edition";
+                document.querySelectorAll('.ceo-only, .leader-only').forEach(el => el.classList.add('hidden-role'));
             }
-            if(currentUserRole !== 'CEO') { document.querySelectorAll('.ceo-only-option').forEach(el => el.disabled = true); document.getElementById('workspaceRoleFilter').value = currentUserRole; document.getElementById('workspaceRoleFilter').disabled = true; }
+
+            if(currentUserRole !== 'CEO') { 
+                document.querySelectorAll('.ceo-only-option').forEach(el => el.disabled = true); 
+                document.getElementById('workspaceRoleFilter').value = currentUserRole; 
+                document.getElementById('workspaceRoleFilter').disabled = true; 
+            }
             renderSOP(); renderAllViews();
         }
 
@@ -540,69 +574,71 @@
         let currentCalendarMonth = todayObj.getMonth(); let currentCalendarYear = todayObj.getFullYear();
 
         const defaultTasks = [
-            { id: "SB-001", role: "LEAD_TEAM_1", owner: "Dung", strategy: "Quản Trị Rủi Ro & Chất Lượng", priority: "Khẩn cấp", name: "Chốt báo cáo vận hành tháng", due: "2026-03-25", status: "Đang làm", isIncident: false, approval: "Chưa nộp", drive: "", notes: "", archived: false, deleted: false, checklist: [{text:"Chốt file data", done:true}], revisionCount: 0, lastUpdated: Date.now() },
-            { id: "SB-002", role: "LEAD_TEAM_2", owner: "Thu", strategy: "Tăng Trưởng Doanh Thu", priority: "Cao", name: "Chạy chiến dịch Event Hè", due: "2026-03-20", status: "Kế hoạch", isIncident: false, approval: "Chưa nộp", drive: "", notes: "", archived: false, deleted: false, checklist: [{text:"Lên danh sách", done:false}], revisionCount: 1, lastUpdated: Date.now() }
+            { id: "SB-001", role: "LEAD_TEAM_1", owner: "Dung", strategy: "Quản Trị Rủi Ro & Chất Lượng", priority: "Khẩn cấp", name: "Chốt báo cáo vận hành tháng", due: "2026-03-25", status: "Đang làm", isIncident: false, approval: "Chưa nộp", drive: "", notes: "", archived: false, deleted: false, checklist: [{text:"Chốt file data", done:true}], revisionCount: 0, lastUpdated: Date.now(), createdBy: "CEO" },
+            { id: "SB-002", role: "STAFF_1", owner: "Thu", strategy: "Tăng Trưởng Doanh Thu", priority: "Cao", name: "Tạo chiến dịch Event Hè", due: "2026-03-20", status: "Kế hoạch", isIncident: false, approval: "Chưa nộp", drive: "", notes: "", archived: false, deleted: false, checklist: [{text:"Lên danh sách", done:false}], revisionCount: 1, lastUpdated: Date.now(), createdBy: "LEAD_TEAM_1" }
         ];
-        const defaultTemplates = [{ role: "LEAD_TEAM_1", name: "Chốt báo cáo vận hành" }, { role: "LEAD_TEAM_2", name: "Kế hoạch chạy chiến dịch" }];
+        const defaultTemplates = [{ role: "LEAD_TEAM_1", name: "Chốt báo cáo vận hành" }, { role: "STAFF_1", name: "Tạo chiến dịch" }];
 
-        let tasks = JSON.parse(localStorage.getItem('sunbot_x10_tasks')) || defaultTasks;
-        let templates = JSON.parse(localStorage.getItem('sunbot_x10_templates')) || defaultTemplates;
+        let tasks = JSON.parse(localStorage.getItem('sunbot_core_tasks_v4')) || defaultTasks;
+        let templates = JSON.parse(localStorage.getItem('sunbot_core_templates_v4')) || defaultTemplates;
         let activeChecklist = [];
 
-        document.addEventListener('DOMContentLoaded', () => { document.getElementById('currentDate').textContent = todayObj.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }); document.getElementById('syncReminder').classList.add('hidden'); });
-        function saveToDB() { localStorage.setItem('sunbot_x10_tasks', JSON.stringify(tasks)); localStorage.setItem('sunbot_x10_templates', JSON.stringify(templates)); localStorage.setItem('sunbot_core_sop_v3', companySOP); renderAllViews(); renderSOP(); }
+        document.addEventListener('DOMContentLoaded', () => { document.getElementById('currentDate').textContent = todayObj.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }); });
+        
+        function saveToDB() { 
+            localStorage.setItem('sunbot_core_tasks_v4', JSON.stringify(tasks)); 
+            localStorage.setItem('sunbot_core_templates_v4', JSON.stringify(templates)); 
+            localStorage.setItem('sunbot_core_sop_v4', companySOP); 
+            renderAllViews(); renderSOP(); 
+        }
 
-        // --- 2. CLOUD SYNC LOGIC ---
-        async function syncWithCloud() {
+        // --- 2. CLOUD SYNC LOGIC (AUTO-SYNC SUPPORT) ---
+        async function syncWithCloud(isSilent = false) {
             if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes("DÁN_LINK")) {
-                return showToast("⛔ Lỗi: Bạn chưa cài đặt Link Apps Script trong code HTML!");
+                if(!isSilent) showToast("⛔ Lỗi: Bạn chưa dán Link Google Apps Script vào code!");
+                return;
             }
             
             const btn = document.getElementById('btnSyncCloud');
             const originalHTML = btn.innerHTML;
-            btn.innerHTML = `<span class="menu-icon mr-2 animate-spin">⏳</span> <span class="menu-text uppercase tracking-wider">ĐANG TẢI...</span>`;
-            btn.disabled = true;
+            const iconHTML = document.getElementById('syncStatusIcon');
+            
+            if(!isSilent) {
+                btn.innerHTML = `<span class="menu-icon mr-2 animate-spin">⏳</span> <span class="menu-text uppercase tracking-wider">ĐANG ĐỒNG BỘ...</span>`;
+                btn.disabled = true;
+            }
+            if(iconHTML) { iconHTML.classList.remove('hidden'); iconHTML.innerHTML = 'Đang đồng bộ...'; iconHTML.classList.add('text-orange-500'); iconHTML.classList.remove('text-green-500'); }
 
             try {
-                // 1. Tải dữ liệu từ Google Drive về
                 const response = await fetch(APPS_SCRIPT_URL);
                 const cloudData = await response.json();
                 
-                // 2. Gộp dữ liệu
                 let cloudTasks = cloudData.tasks || [];
                 if(cloudData.settings && currentUserRole === 'CEO') companySOP = cloudData.settings; 
                 
-                let uc = 0, nc = 0; 
+                let uc = 0, nc = 0, changed = false; 
                 cloudTasks.forEach(inc => { 
                     const idx = tasks.findIndex(t => t.id === inc.id); 
                     if(idx > -1) { 
-                        if(!tasks[idx].lastUpdated || inc.lastUpdated > tasks[idx].lastUpdated) { 
-                            tasks[idx] = inc; uc++; 
-                        } 
-                    } else { 
-                        tasks.push(inc); nc++; 
-                    } 
+                        if(!tasks[idx].lastUpdated || inc.lastUpdated > tasks[idx].lastUpdated) { tasks[idx] = inc; uc++; changed = true; } 
+                    } else { tasks.push(inc); nc++; changed = true; } 
                 });
 
-                // Lưu Local
-                saveToDB(); 
+                if (changed) saveToDB(); 
                 
-                // 3. Đẩy file tổng ngược lên Drive lại
                 const payload = { tasks: tasks, templates: templates, settings: companySOP };
                 await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify(payload)
+                    method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload)
                 });
 
-                showToast(`☁️ Đồng bộ Cloud Xong! (Cập nhật: ${uc} việc, Mới: ${nc} việc)`);
+                if(!isSilent) showToast(`☁️ Đồng bộ Cloud Xong! (Cập nhật: ${uc} việc, Mới: ${nc} việc)`);
+                if(iconHTML) { iconHTML.innerHTML = 'Đã đồng bộ'; iconHTML.classList.add('text-green-500'); iconHTML.classList.remove('text-orange-500'); setTimeout(()=>iconHTML.classList.add('hidden'), 3000); }
             } catch (error) {
                 console.error(error);
-                showToast("⛔ Lỗi đồng bộ. Hãy kiểm tra lại kết nối mạng!");
+                if(!isSilent) showToast("⛔ Lỗi đồng bộ. Hãy kiểm tra lại kết nối mạng!");
+                if(iconHTML) { iconHTML.innerHTML = 'Lỗi mạng'; iconHTML.classList.add('text-red-500'); }
             } finally {
-                btn.innerHTML = originalHTML;
-                btn.disabled = false;
+                if(!isSilent) { btn.innerHTML = originalHTML; btn.disabled = false; }
             }
         }
 
@@ -610,15 +646,13 @@
         function renderSOP() { document.getElementById('sopContentDisplay').innerHTML = companySOP; }
         function openSOPEdit() { document.getElementById('editSopContent').innerHTML = companySOP; document.getElementById('sopModal').classList.remove('hidden'); }
         function closeSOPEdit() { document.getElementById('sopModal').classList.add('hidden'); }
-        function saveSOP() { companySOP = document.getElementById('editSopContent').innerHTML; saveToDB(); closeSOPEdit(); showToast("✅ Đã lưu Cẩm Nang SOP!"); }
+        function saveSOP() { companySOP = document.getElementById('editSopContent').innerHTML; saveToDB(); closeSOPEdit(); showToast("✅ Đã lưu Cẩm Nang SOP!"); syncWithCloud(true); }
 
         function formatDoc(cmd, value=null) { document.execCommand(cmd, false, value); document.getElementById('editSopContent').focus(); }
         function insertVisualLink() {
-            const text = prompt("Tên hiển thị của Link:"); if(!text) return;
-            const url = prompt("Đường dẫn (VD: https://...):"); if(!url) return;
+            const text = prompt("Tên hiển thị của Link:"); if(!text) return; const url = prompt("Đường dẫn (VD: https://...):"); if(!url) return;
             const html = `<a href="${url}" target="_blank" style="color:#ea580c; font-weight:800; text-decoration:underline;">${text}</a>&nbsp;`;
-            document.execCommand('insertHTML', false, html);
-            document.getElementById('editSopContent').focus();
+            document.execCommand('insertHTML', false, html); document.getElementById('editSopContent').focus();
         }
 
         // --- 4. TABS & VIEW SWITCHER ---
@@ -627,8 +661,8 @@
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('sidebar-active'));
             document.getElementById(tabId).classList.add('active'); document.getElementById('btn-' + tabId).classList.add('sidebar-active');
-            const titles = {'sopHub':'Cẩm Nang Quy Trình (SOP)', 'performance':'Đo Lường Hiệu Suất Quản Lý', 'workspace':'Không Gian Làm Việc', 'eisenhower':'Ma Trận Ưu Tiên', 'approval':'Duyệt Báo Cáo'};
-            document.getElementById('pageTitle').textContent = titles[tabId];
+            const titles = {'sopHub':'Cẩm Nang Quy Trình (SOP)', 'performance':'Đo Lường Hiệu Suất Cá Nhân', 'workspace':'Không Gian Làm Việc', 'eisenhower':'Ma Trận Ưu Tiên', 'approval':'Duyệt Báo Cáo'};
+            document.getElementById('pageTitle').textContent = titles[tabId] || 'Báo Cáo Phân Tích';
             if(window.innerWidth < 768) { document.getElementById('sidebar').classList.add('-translate-x-full'); document.getElementById('sidebarOverlay').classList.add('hidden'); }
             
             const switcherPC = document.getElementById('viewSwitcher'); const switcherMb = document.getElementById('viewSwitcherMobile');
@@ -653,16 +687,57 @@
             return `<div class="mt-2 pt-2 border-t border-slate-100"><div class="flex justify-between items-center mb-1"><span class="text-[8px] font-black text-slate-400 uppercase tracking-wider">Tiến Độ</span><span class="text-[9px] font-black text-slate-600">${done}/${checklist.length}</span></div><div class="w-full bg-slate-100 rounded-full h-1 shadow-inner"><div class="${barColor} h-1 rounded-full transition-all duration-500" style="width: ${pct}%"></div></div></div>`;
         }
 
-        // --- 5. PERFORMANCE DASHBOARD ---
+        // --- 5. PERFORMANCE DASHBOARD & DRILL-DOWN ---
         function renderPerformance() {
+            // SỬA LỖI TÀNG HÌNH TẠI ĐÂY: Quản lý thấy Việc mình làm HOẶC Việc mình giao
             let baseTasks = tasks.filter(t => !t.deleted);
-            if(currentUserRole !== 'CEO') baseTasks = baseTasks.filter(t => t.role === currentUserRole);
+            if(currentUserRole !== 'CEO') {
+                baseTasks = baseTasks.filter(t => t.role === currentUserRole || t.createdBy === currentUserRole);
+            }
             const activeKPI = baseTasks.filter(t => !t.archived);
-            const total = activeKPI.length; const done = activeKPI.filter(t => t.status === 'Hoàn thành').length; const overdue = activeKPI.filter(t => t.status === 'Quá hạn' || (!t.archived && t.status !== 'Hoàn thành' && t.due < todayStr)).length; const reviseCount = activeKPI.reduce((sum, t) => sum + (t.revisionCount || 0), 0);
+            const total = activeKPI.length; 
+            const done = activeKPI.filter(t => t.status === 'Hoàn thành').length; 
+            const overdue = activeKPI.filter(t => t.status === 'Quá hạn' || (!t.archived && t.status !== 'Hoàn thành' && t.due < todayStr)).length; 
+            const reviseCount = activeKPI.reduce((sum, t) => sum + (t.revisionCount || 0), 0);
             let onTimeRate = 0; if(total > 0) { const onTime = total - overdue; onTimeRate = Math.round((onTime / total) * 100); }
 
             document.getElementById('perf-total').innerText = total; document.getElementById('perf-done').innerText = done; document.getElementById('perf-ontime-rate').innerText = `(${onTimeRate}% Đúng hạn)`; document.getElementById('perf-overdue').innerText = overdue; document.getElementById('perf-revise').innerText = reviseCount;
             renderCharts(activeKPI);
+        }
+
+        function viewPerformanceTasks(type) {
+            let baseTasks = tasks.filter(t => !t.deleted);
+            if(currentUserRole !== 'CEO') {
+                baseTasks = baseTasks.filter(t => t.role === currentUserRole || t.createdBy === currentUserRole);
+            }
+            const activeKPI = baseTasks.filter(t => !t.archived);
+            
+            let filteredTasks = []; let title = "";
+            if (type === 'TOTAL') { filteredTasks = activeKPI; title = "Tổng Việc Liên Quan"; } 
+            else if (type === 'DONE') { filteredTasks = activeKPI.filter(t => t.status === 'Hoàn thành'); title = "Công Việc Đã Hoàn Thành"; } 
+            else if (type === 'OVERDUE') { filteredTasks = activeKPI.filter(t => t.status === 'Quá hạn' || (!t.archived && t.status !== 'Hoàn thành' && t.due < todayStr)); title = "Công Việc Trễ Hạn / Sự Cố"; } 
+            else if (type === 'REVISE') { filteredTasks = activeKPI.filter(t => (t.revisionCount || 0) > 0); title = "Công Việc Bị Bắt Làm Lại"; }
+            
+            document.getElementById('perf-list-title').textContent = title + ` (${filteredTasks.length})`;
+            
+            let html = '';
+            if (filteredTasks.length === 0) {
+                html = `<tr><td colspan="6" class="px-4 py-6 text-center text-slate-500 font-bold">Không có công việc nào trong nhóm này.</td></tr>`;
+            } else {
+                filteredTasks.forEach(t => {
+                    html += `<tr class="hover:bg-orange-50/50 transition cursor-pointer border-l-4 border-transparent hover:border-orange-400" onclick="editTask('${t.id}')">
+                        <td class="px-4 py-3 font-mono text-[10px] font-bold text-orange-500">${t.id}</td>
+                        <td class="px-4 py-3 font-extrabold text-slate-800 break-words whitespace-normal line-clamp-2">${t.name}</td>
+                        <td class="px-4 py-3"><span class="bg-slate-100 text-slate-700 font-black px-2 py-1 rounded border border-slate-200 text-[9px] uppercase">${t.createdBy} ➔ ${t.role}</span></td>
+                        <td class="px-4 py-3 font-black text-xs ${t.due < todayStr && t.status !== 'Hoàn thành' ? 'text-red-600' : 'text-slate-500'}">${t.due.replace(/-/g,'/')}</td>
+                        <td class="px-4 py-3 text-center">${getStatusBadge(t)}</td>
+                        <td class="px-4 py-3 text-center font-black text-xs ${t.revisionCount > 0 ? 'text-amber-600' : 'text-slate-400'}">${t.revisionCount || 0} lần</td>
+                    </tr>`;
+                });
+            }
+            
+            document.getElementById('perf-task-list-body').innerHTML = html;
+            const container = document.getElementById('perf-task-list-container'); container.classList.remove('hidden'); container.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         // --- 6. RENDERERS ---
@@ -672,8 +747,11 @@
             const fRole = document.getElementById('workspaceRoleFilter') ? document.getElementById('workspaceRoleFilter').value : 'ALL';
             const fTag = document.getElementById('workspaceTagFilter') ? document.getElementById('workspaceTagFilter').value : 'ALL';
             
+            // SỬA LỖI TÀNG HÌNH: Hiển thị việc CỦA TÔI hoặc DO TÔI GIAO ĐI
             let baseTasks = tasks.filter(t => !t.deleted); 
-            if(currentUserRole !== 'CEO') baseTasks = baseTasks.filter(t => t.role === currentUserRole);
+            if(currentUserRole !== 'CEO') {
+                baseTasks = baseTasks.filter(t => t.role === currentUserRole || t.createdBy === currentUserRole);
+            }
             const activeKPI = baseTasks.filter(t => !t.archived);
 
             let wsTasks = activeKPI.filter(t => {
@@ -682,7 +760,11 @@
             });
 
             renderMasterTable(wsTasks); renderKanban(wsTasks); renderTimeline(wsTasks); renderCalendar(wsTasks);
-            if(currentUserRole === 'CEO') renderApprovalTable(baseTasks);
+            
+            // Render Bảng Phê Duyệt cho CEO và Leader (Của những việc DO HỌ GIAO ĐI)
+            if(currentUserRole === 'CEO' || currentUserRole.includes('LEAD')) {
+                renderApprovalTable(baseTasks);
+            }
         }
 
         function renderMasterTable(filteredTasks) {
@@ -697,7 +779,6 @@
             }); document.getElementById('master-table-body').innerHTML = html;
         }
 
-        // KANBAN DRAG & DROP LOGIC
         function allowDrop(ev) { ev.preventDefault(); ev.currentTarget.classList.add('drag-over'); }
         function dragEnter(ev) { ev.preventDefault(); ev.currentTarget.classList.add('drag-over'); }
         function dragLeave(ev) { ev.currentTarget.classList.remove('drag-over'); }
@@ -707,9 +788,11 @@
             ev.preventDefault(); const col = ev.currentTarget; col.classList.remove('drag-over');
             const id = ev.dataTransfer.getData("text"); const task = tasks.find(t => t.id === id);
             if(task) {
-                if(currentUserRole !== 'CEO' && task.role !== currentUserRole) { showToast('⛔ Bạn không có quyền kéo việc của vị trí khác!'); renderAllViews(); return; }
+                // Người nhận HOẶC Người giao đều có quyền kéo thả
+                if(currentUserRole !== 'CEO' && task.role !== currentUserRole && task.createdBy !== currentUserRole) { showToast('⛔ Bạn không có quyền kéo việc này!'); return; }
                 task.status = newStatus; if(newStatus === 'Hoàn thành' && task.approval === 'Chưa nộp') task.approval = 'Chờ CEO duyệt';
                 task.lastUpdated = Date.now(); saveToDB(); showToast(`✅ Chuyển sang: ${newStatus}`);
+                syncWithCloud(true);
             }
         }
 
@@ -717,7 +800,7 @@
             const cols = { 'Kế hoạch': [], 'Đang làm': [], 'Vướng mắc': [], 'Hoàn thành': [] };
             filteredTasks.forEach(t => { let col = t.status; if(t.status === 'Quá hạn') col = 'Vướng mắc'; if(cols[col]) cols[col].push(t); });
             
-            const drawCard = (t) => `<div id="card-${t.id}" draggable="${currentUserRole==='CEO' || t.role===currentUserRole}" ondragstart="drag(event, '${t.id}')" ondragend="dragEnd(event)" class="kanban-card ${t.isIncident ? 'border-l-red-500 bg-red-50/20' : ''}" onclick="editTask('${t.id}')"><div class="flex justify-between items-start mb-2"><span class="text-[9px] font-black text-slate-400 uppercase">${t.role}</span></div><p class="text-sm font-black text-slate-800 leading-snug mb-3 pointer-events-none">${t.name}</p><div class="flex justify-between items-center text-[10px] font-bold text-slate-500 pointer-events-none"><span class="bg-orange-50 text-orange-700 px-2 py-0.5 rounded-md border border-orange-100">${t.owner}</span><span class="${t.due < todayStr ? 'text-red-600 bg-red-50 px-2 py-0.5 rounded-md' : ''}">${t.due.substring(5).replace('-','/')}</span></div>${getChecklistProgress(t.checklist)}</div>`;
+            const drawCard = (t) => `<div id="card-${t.id}" draggable="${currentUserRole==='CEO' || t.role===currentUserRole || t.createdBy===currentUserRole}" ondragstart="drag(event, '${t.id}')" ondragend="dragEnd(event)" class="kanban-card ${t.isIncident ? 'border-l-red-500 bg-red-50/20' : ''}" onclick="editTask('${t.id}')"><div class="flex justify-between items-start mb-2"><span class="text-[9px] font-black text-slate-400 uppercase">${t.role}</span></div><p class="text-sm font-black text-slate-800 leading-snug mb-3 pointer-events-none">${t.name}</p><div class="flex justify-between items-center text-[10px] font-bold text-slate-500 pointer-events-none"><span class="bg-orange-50 text-orange-700 px-2 py-0.5 rounded-md border border-orange-100">${t.owner}</span><span class="${t.due < todayStr ? 'text-red-600 bg-red-50 px-2 py-0.5 rounded-md' : ''}">${t.due.substring(5).replace('-','/')}</span></div>${getChecklistProgress(t.checklist)}</div>`;
             document.getElementById('kb-planned').innerHTML = cols['Kế hoạch'].map(drawCard).join(''); document.getElementById('kb-progress').innerHTML = cols['Đang làm'].map(drawCard).join(''); document.getElementById('kb-blocked').innerHTML = cols['Vướng mắc'].map(drawCard).join(''); document.getElementById('kb-done').innerHTML = cols['Hoàn thành'].map(drawCard).join('');
         }
 
@@ -749,7 +832,7 @@
                 let cellHtml = `<div class="cal-cell ${isToday ? 'today' : ''}"><div class="cal-date">${i}</div>`;
                 if(tasksByDate[i]) {
                     tasksByDate[i].forEach(t => {
-                        let bg = 'bg-slate-100 text-slate-700';
+                        let bg = 'bg-slate-100 text-slate-700 border-l-slate-400';
                         if(t.status==='Hoàn thành') bg = 'bg-green-100 text-green-700 border-l-green-500'; else if(t.status==='Quá hạn' || t.isIncident) bg = 'bg-red-100 text-red-700 border-l-red-500'; else if(t.priority==='Khẩn cấp') bg = 'bg-orange-100 text-orange-700 border-l-orange-500';
                         cellHtml += `<div class="cal-task ${bg}" onclick="editTask('${t.id}')" title="${t.name}">${t.name}</div>`;
                     });
@@ -759,7 +842,7 @@
 
         function renderEisenhower() {
             let taskSet = tasks.filter(t => !t.deleted); 
-            if(currentUserRole !== 'CEO') taskSet = taskSet.filter(t => t.role === currentUserRole);
+            if(currentUserRole !== 'CEO') taskSet = taskSet.filter(t => t.role === currentUserRole || t.createdBy === currentUserRole);
             let active = taskSet.filter(t => !t.archived && t.status !== 'Hoàn thành');
             const q1=[], q2=[], q3=[], q4=[];
             const isUrgent = (due) => { const d = new Date(due).getTime(); const n = todayObj.getTime(); return ((d - n) / (1000*60*60*24)) <= 3; };
@@ -775,12 +858,15 @@
         }
 
         function renderApprovalTable(taskSet) {
-            let pendings = taskSet.filter(t => t.approval === 'Chờ CEO duyệt' && !t.archived); let container = document.getElementById('approval-cards-container');
-            if(pendings.length === 0) return container.innerHTML = `<div class="p-10 text-center bg-white rounded-2xl border border-dashed border-orange-200"><p class="text-orange-800 font-black text-lg">✨ Tuyệt vời! Không có báo cáo nào chờ duyệt.</p></div>`;
+            // Lọc ra các task Đang chờ duyệt VÀ người dùng hiện tại là CEO HOẶC là người tạo ra task đó (giao đi)
+            let pendings = taskSet.filter(t => t.approval === 'Chờ CEO duyệt' && !t.archived && (currentUserRole === 'CEO' || t.createdBy === currentUserRole)); 
+            
+            let container = document.getElementById('approval-cards-container');
+            if(pendings.length === 0) return container.innerHTML = `<div class="p-10 text-center bg-white rounded-2xl border border-dashed border-orange-200"><p class="text-orange-800 font-black text-lg">✨ Tuyệt vời! Bạn không có báo cáo nào cần duyệt.</p></div>`;
             let html = '';
             pendings.forEach(t => {
                 const chk = t.checklist || []; const doneCount = chk.filter(c=>c.done).length; const isFullyDone = chk.length === 0 || doneCount === chk.length;
-                html += `<div class="bg-white p-4 md:p-6 rounded-2xl border border-orange-100 flex flex-col lg:flex-row items-start lg:items-center justify-between shadow-sm gap-4 hover:shadow-md transition"><div class="flex-1"><span class="bg-orange-100 text-orange-800 font-black px-3 py-1 rounded-md text-[10px] uppercase border border-orange-200 mb-2 inline-block">${t.role} | ${t.owner}</span><h4 class="text-lg font-black text-slate-800">${t.name}</h4><div class="flex items-center space-x-4 mt-3"><span class="text-xs font-bold ${isFullyDone ? 'text-green-600 bg-green-50 px-2 py-1 rounded' : 'text-red-600 bg-red-50 px-2 py-1 rounded'}">Checklist: ${doneCount}/${chk.length}</span>${t.drive ? `<a href="${t.drive}" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-black uppercase underline flex items-center"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg> Mở File Báo Cáo</a>` : '<span class="text-slate-400 text-xs font-bold bg-slate-50 px-2 py-1 rounded">Không có Link File</span>'}</div></div><div class="flex flex-row lg:flex-col space-x-3 lg:space-x-0 lg:space-y-3 w-full lg:w-40 lg:pl-6 lg:border-l border-slate-100"><button onclick="quickApprove('${t.id}', 'Đã duyệt')" class="flex-1 bg-[#16a34a] hover:bg-green-700 text-white px-4 py-3 rounded-xl text-xs font-black uppercase shadow-lg shadow-green-500/30 transition transform hover:-translate-y-0.5">✅ Duyệt Đóng</button><button onclick="quickApprove('${t.id}', 'Làm lại')" class="flex-1 bg-white border-2 border-orange-200 text-orange-600 hover:bg-orange-50 px-4 py-3 rounded-xl text-xs font-black uppercase transition">🔄 Yêu Cầu Sửa</button></div></div>`;
+                html += `<div class="bg-white p-4 md:p-6 rounded-2xl border border-orange-100 flex flex-col lg:flex-row items-start lg:items-center justify-between shadow-sm gap-4 hover:shadow-md transition"><div class="flex-1"><span class="bg-orange-100 text-orange-800 font-black px-3 py-1 rounded-md text-[10px] uppercase border border-orange-200 mb-2 inline-block">Nơi thực hiện: ${t.role} | ${t.owner}</span><h4 class="text-lg font-black text-slate-800">${t.name}</h4><div class="flex items-center space-x-4 mt-3"><span class="text-xs font-bold ${isFullyDone ? 'text-green-600 bg-green-50 px-2 py-1 rounded' : 'text-red-600 bg-red-50 px-2 py-1 rounded'}">Checklist: ${doneCount}/${chk.length}</span>${t.drive ? `<a href="${t.drive}" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-black uppercase underline flex items-center"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg> Mở File Báo Cáo</a>` : '<span class="text-slate-400 text-xs font-bold bg-slate-50 px-2 py-1 rounded">Không có Link File</span>'}</div></div><div class="flex flex-row lg:flex-col space-x-3 lg:space-x-0 lg:space-y-3 w-full lg:w-40 lg:pl-6 lg:border-l border-slate-100"><button onclick="quickApprove('${t.id}', 'Đã duyệt')" class="flex-1 bg-[#16a34a] hover:bg-green-700 text-white px-4 py-3 rounded-xl text-xs font-black uppercase shadow-lg shadow-green-500/30 transition transform hover:-translate-y-0.5">✅ Duyệt Đóng</button><button onclick="quickApprove('${t.id}', 'Làm lại')" class="flex-1 bg-white border-2 border-orange-200 text-orange-600 hover:bg-orange-50 px-4 py-3 rounded-xl text-xs font-black uppercase transition">🔄 Yêu Cầu Sửa</button></div></div>`;
             }); container.innerHTML = html;
         }
 
@@ -814,7 +900,15 @@
             document.getElementById('cycleContainer').classList.remove('hidden'); 
             
             document.getElementById('modalTitleText').innerHTML = `<span class="bg-orange-500 p-1.5 rounded-lg mr-3 text-xs">⚙️</span> Bảng Cấu Hình Công Việc`;
-            if(currentUserRole !== 'CEO') { document.getElementById('taskRole').value = currentUserRole; document.getElementById('taskRole').disabled = true; } else { document.getElementById('taskRole').disabled = false; }
+            
+            // Sửa lại đoạn tự gán Role: CEO và Leader đều có thể chọn giao cho Role khác. Không tự động khóa.
+            if(currentUserRole === 'CEO' || currentUserRole.includes('LEAD')) { 
+                document.getElementById('taskRole').disabled = false; 
+                document.getElementById('taskRole').value = ""; // Để trống bắt buộc chọn
+            } else { 
+                document.getElementById('taskRole').value = currentUserRole; 
+                document.getElementById('taskRole').disabled = true; 
+            }
             handleRoleChange(); document.getElementById('taskModal').classList.remove('hidden'); 
         }
         function closeModal() { document.getElementById('taskModal').classList.add('hidden'); }
@@ -837,26 +931,30 @@
             if (confirm("⚠️ BẠN CÓ CHẮC CHẮN MUỐN XÓA CÔNG VIỆC NÀY?\n\nHành động này sẽ xóa vĩnh viễn trên mọi thiết bị và không thể hoàn tác!")) {
                 const idx = tasks.findIndex(t => t.id === id);
                 if (idx > -1) { 
-                    tasks[idx].deleted = true; // Xóa Mềm (Tombstone)
-                    tasks[idx].lastUpdated = Date.now(); // Cập nhật timestamp để Cloud biết
+                    tasks[idx].deleted = true; // Xóa Mềm (Tombstone) để Cloud không "hồi sinh" nó
+                    tasks[idx].lastUpdated = Date.now();
                     saveToDB(); 
                     closeModal(); 
                     showToast("🗑️ Đã xóa công việc thành công!"); 
+                    syncWithCloud(true); 
                 }
             }
         }
 
         function saveTask(e) {
             e.preventDefault(); const id = document.getElementById('taskId').value;
-            const role = currentUserRole === 'CEO' ? document.getElementById('taskRole').value : currentUserRole; const name = document.getElementById('taskName').value;
+            const role = document.getElementById('taskRole').value; 
+            const name = document.getElementById('taskName').value;
             const cycle = document.getElementById('taskCycle') ? document.getElementById('taskCycle').value : 'None';
             
             if(document.getElementById('saveAsTemplate') && document.getElementById('saveAsTemplate').checked) { const exists = templates.some(t => t.role === role && t.name === name); if(!exists) { templates.push({ role: role, name: name }); } }
             
+            const createdBy = id ? (tasks.find(t=>t.id===id).createdBy || currentUserRole) : currentUserRole;
+
             const baseTask = {
                 name: name, role: role, owner: document.getElementById('taskOwner').value, notes: document.getElementById('taskNotes').value,
                 priority: document.getElementById('taskPriority').value, strategy: document.getElementById('taskStrategy').value, due: document.getElementById('taskDue').value, status: document.getElementById('taskStatus').value, 
-                isIncident: document.getElementById('taskIncident').checked, approval: document.getElementById('taskApproval').value, drive: document.getElementById('taskDrive').value, archived: false, deleted: false, checklist: [...activeChecklist], revisionCount: parseInt(document.getElementById('taskRevisionCount').value) || 0, lastUpdated: Date.now()
+                isIncident: document.getElementById('taskIncident').checked, approval: document.getElementById('taskApproval').value, drive: document.getElementById('taskDrive').value, archived: false, deleted: false, checklist: [...activeChecklist], revisionCount: parseInt(document.getElementById('taskRevisionCount').value) || 0, lastUpdated: Date.now(), createdBy: createdBy
             };
 
             if(id) { 
@@ -874,21 +972,41 @@
                 }
             }
             closeModal(); saveToDB(); showToast("✅ Đã lưu Công Việc!");
+            syncWithCloud(true);
         }
 
         function editTask(id) {
             const t = tasks.find(x => x.id === id); if(!t) return;
-            if(currentUserRole !== 'CEO' && t.role !== currentUserRole) return showToast("⛔ Chặn: Bạn không quản lý Vị trí này.");
+            // Cho phép người TẠO (giao) hoặc người NHẬN (thực thi) được mở form
+            if(currentUserRole !== 'CEO' && t.role !== currentUserRole && t.createdBy !== currentUserRole) {
+                return showToast("⛔ Chặn: Bạn không quản lý Vị trí này.");
+            }
+            
             ['Id', 'Name', 'Role', 'Owner', 'Priority', 'Strategy', 'Due', 'Status', 'Approval', 'Drive', 'Notes'].forEach(f => { const el = document.getElementById('task' + f); if(el) el.value = t[f.toLowerCase()] || ''; });
             if(!t.priority) document.getElementById('taskPriority').value = 'Bình thường';
             document.getElementById('taskIncident').checked = t.isIncident || false; if(document.getElementById('saveAsTemplate')) document.getElementById('saveAsTemplate').checked = false;
             document.getElementById('taskRevisionCount').value = t.revisionCount || 0;
             
             document.getElementById('btnDuplicate').classList.remove('hidden'); document.getElementById('btnDuplicate').classList.add('flex');
-            document.getElementById('btnDelete').classList.remove('hidden'); document.getElementById('btnDelete').classList.add('flex');
+            
+            // CHỈ CEO HOẶC NGƯỜI GIAO VIỆC MỚI CÓ QUYỀN XÓA
+            const canDelete = (currentUserRole === 'CEO' || t.createdBy === currentUserRole);
+            if(canDelete) {
+                document.getElementById('btnDelete').classList.remove('hidden'); document.getElementById('btnDelete').classList.add('flex');
+            } else {
+                document.getElementById('btnDelete').classList.add('hidden'); document.getElementById('btnDelete').classList.remove('flex');
+            }
+
             if(document.getElementById('cycleContainer')) document.getElementById('cycleContainer').classList.add('hidden'); 
 
-            if(currentUserRole !== 'CEO') document.getElementById('taskRole').disabled = true; handleRoleChange(); 
+            // Cấm người nhận việc (nếu không phải là người giao) được đổi người khác
+            if(currentUserRole !== 'CEO' && t.createdBy !== currentUserRole) {
+                document.getElementById('taskRole').disabled = true; 
+            } else {
+                document.getElementById('taskRole').disabled = false;
+            }
+
+            handleRoleChange(); 
             activeChecklist = t.checklist ? JSON.parse(JSON.stringify(t.checklist)) : []; renderChecklistUI(); document.getElementById('taskModal').classList.remove('hidden');
         }
 
@@ -899,6 +1017,7 @@
                 if(decision === 'Đã duyệt') tasks[idx].status = 'Hoàn thành'; 
                 else if (decision === 'Làm lại') tasks[idx].revisionCount = (tasks[idx].revisionCount || 0) + 1;
                 tasks[idx].lastUpdated = Date.now(); saveToDB(); showToast(`✅ Đã ghi nhận: ${decision}`);
+                syncWithCloud(true);
             } 
         }
 
@@ -915,7 +1034,7 @@
                 document.getElementById('aiInputArea').classList.add('hidden'); document.getElementById('aiStagingArea').classList.remove('hidden'); document.getElementById('aiStagingArea').classList.add('flex');
                 let html = '';
                 stagedAITasks.forEach((t, i) => {
-                    html += `<tr class="border-b border-slate-100 hover:bg-orange-50/30"><td class="px-3 py-3 text-center"><input type="checkbox" id="stage_chk_${i}" checked onchange="updateStageCount()" class="w-4 h-4 text-orange-600 rounded cursor-pointer"></td><td class="px-3 py-3"><input type="text" id="stage_name_${i}" value="${t.name || ''}" class="w-full border border-slate-200 rounded-lg px-2 py-1.5 text-xs font-bold outline-none focus:border-orange-500"></td><td class="px-3 py-3"><select id="stage_role_${i}" class="w-full border border-slate-200 rounded-lg px-2 py-1.5 text-xs outline-none bg-white font-bold text-orange-900"><option value="LEAD_TEAM_1" ${t.role==='LEAD_TEAM_1'?'selected':''}>LEAD_TEAM_1</option><option value="LEAD_TEAM_2" ${t.role==='LEAD_TEAM_2'?'selected':''}>LEAD_TEAM_2</option><option value="LEAD_TEAM_3" ${t.role==='LEAD_TEAM_3'?'selected':''}>LEAD_TEAM_3</option><option value="DEV" ${t.role==='DEV'?'selected':''}>DEV</option><option value="Staff_1" ${t.role==='Staff_1'?'selected':''}>Staff_1</option><option value="STAFF_2" ${t.role==='STAFF_2'?'selected':''}>STAFF_2</option><option value="CEO" ${t.role==='CEO'?'selected':''}>CEO</option></select></td><td class="px-3 py-3"><input type="text" id="stage_owner_${i}" value="${t.owner || ''}" class="w-24 border border-slate-200 rounded-lg px-2 py-1.5 text-xs outline-none font-bold"></td><td class="px-3 py-3"><input type="date" id="stage_due_${i}" value="${t.due || todayStr}" class="w-full border border-slate-200 rounded-lg px-2 py-1.5 text-xs outline-none font-bold"></td></tr>`;
+                    html += `<tr class="border-b border-slate-100 hover:bg-orange-50/30"><td class="px-3 py-3 text-center"><input type="checkbox" id="stage_chk_${i}" checked onchange="updateStageCount()" class="w-4 h-4 text-orange-600 rounded cursor-pointer"></td><td class="px-3 py-3"><input type="text" id="stage_name_${i}" value="${t.name || ''}" class="w-full border border-slate-200 rounded-lg px-2 py-1.5 text-xs font-bold outline-none focus:border-orange-500"></td><td class="px-3 py-3"><select id="stage_role_${i}" class="w-full border border-slate-200 rounded-lg px-2 py-1.5 text-xs outline-none bg-white font-bold text-orange-900"><option value="LEAD_TEAM_1" ${t.role==='LEAD_TEAM_1'?'selected':''}>LEAD_TEAM_1</option><option value="LEAD_TEAM_2" ${t.role==='LEAD_TEAM_2'?'selected':''}>LEAD_TEAM_2</option><option value="LEAD_TEAM_3" ${t.role==='LEAD_TEAM_3'?'selected':''}>LEAD_TEAM_3</option><option value="DESIGN_ADMIN" ${t.role==='DESIGN_ADMIN'?'selected':''}>DESIGN_ADMIN</option><option value="KEY_TEACHER" ${t.role==='KEY_TEACHER'?'selected':''}>KEY_TEACHER</option><option value="ACCOUNTING" ${t.role==='ACCOUNTING'?'selected':''}>ACCOUNTING</option><option value="CEO" ${t.role==='CEO'?'selected':''}>CEO</option></select></td><td class="px-3 py-3"><input type="text" id="stage_owner_${i}" value="${t.owner || ''}" class="w-24 border border-slate-200 rounded-lg px-2 py-1.5 text-xs outline-none font-bold"></td><td class="px-3 py-3"><input type="date" id="stage_due_${i}" value="${t.due || todayStr}" class="w-full border border-slate-200 rounded-lg px-2 py-1.5 text-xs outline-none font-bold"></td></tr>`;
                 }); document.getElementById('stagingTableBody').innerHTML = html; updateStageCount();
             } catch (err) { showToast("⛔ Lỗi JSON. Yêu cầu xuất chuẩn Array."); }
         }
@@ -926,22 +1045,25 @@
             let added = 0;
             stagedAITasks.forEach((t, i) => {
                 if(document.getElementById(`stage_chk_${i}`).checked) {
-                    tasks.unshift({ id: `SB-AI-${String(Date.now()).slice(-5)}-${added}`, name: document.getElementById(`stage_name_${i}`).value, role: document.getElementById(`stage_role_${i}`).value, owner: document.getElementById(`stage_owner_${i}`).value, strategy: t.strategy || 'Sự Vụ Hàng Ngày', priority: t.priority || 'Bình thường', due: document.getElementById(`stage_due_${i}`).value, status: "Kế hoạch", isIncident: false, approval: "Chưa nộp", drive: "", notes: "", archived: false, deleted: false, checklist: [], revisionCount: 0, lastUpdated: Date.now() }); added++;
+                    tasks.unshift({ id: `SB-AI-${String(Date.now()).slice(-5)}-${added}`, name: document.getElementById(`stage_name_${i}`).value, role: document.getElementById(`stage_role_${i}`).value, owner: document.getElementById(`stage_owner_${i}`).value, strategy: t.strategy || 'Sự Vụ Hàng Ngày', priority: t.priority || 'Bình thường', due: document.getElementById(`stage_due_${i}`).value, status: "Kế hoạch", isIncident: false, approval: "Chưa nộp", drive: "", notes: "", archived: false, deleted: false, checklist: [], revisionCount: 0, lastUpdated: Date.now(), createdBy: currentUserRole }); added++;
                 }
-            }); saveToDB(); closeAIModal(); showToast(`✅ Đã nạp ${added} công việc!`);
+            }); saveToDB(); closeAIModal(); showToast(`✅ Đã nạp ${added} công việc!`); syncWithCloud(true);
         }
 
         // --- EXPORT & TSV ---
         function exportData() {
-            // Không filter t.deleted ở đây để khi tải/gộp file thủ công cũng sẽ lan truyền lệnh Xóa sang thiết bị khác
-            const dataToExport = { tasks: currentUserRole === 'CEO' ? tasks : tasks.filter(t => t.role === currentUserRole), templates: templates, settings: companySOP };
+            // Bao gồm tất cả các task để file backup không bị thất thoát nếu CEO là người thao tác
+            const dataToExport = { tasks: currentUserRole === 'CEO' ? tasks : tasks.filter(t => t.role === currentUserRole || t.createdBy === currentUserRole), templates: templates, settings: companySOP };
             const a = document.createElement('a'); a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataToExport));
             a.download = `Sunbot_Backup_${currentUserRole}_${todayStr}.json`; document.body.appendChild(a); a.click(); a.remove();
         }
         
         function exportPerformance() {
-            let tsv = "Mã ID\tTên Công Việc\tVị Trí (Role)\tNgười Phụ Trách\tMục Tiêu\tMức Độ\tHạn Chót\tTrạng Thái\tSố Lần Bị Trả Lại\n";
-            tasks.filter(t => !t.deleted).forEach(t => { tsv += `${t.id}\t${t.name}\t${t.role}\t${t.owner}\t${t.strategy}\t${t.priority||'Bình thường'}\t${t.due}\t${t.status}\t${t.revisionCount||0}\n`; });
+            let tsv = "Mã ID\tTên Công Việc\tVị Trí (Role)\tNgười Phụ Trách\tNgười Giao Việc\tMục Tiêu\tMức Độ\tHạn Chót\tTrạng Thái\tSố Lần Bị Trả Lại\n";
+            let exportTasks = tasks.filter(t => !t.deleted);
+            if(currentUserRole !== 'CEO') exportTasks = exportTasks.filter(t => t.role === currentUserRole || t.createdBy === currentUserRole);
+            
+            exportTasks.forEach(t => { tsv += `${t.id}\t${t.name}\t${t.role}\t${t.owner}\t${t.createdBy}\t${t.strategy}\t${t.priority||'Bình thường'}\t${t.due}\t${t.status}\t${t.revisionCount||0}\n`; });
             const blob = new Blob([tsv], { type: 'text/tsv;charset=utf-8;' });
             const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `Sunbot_BaoCaoHieuSuat_${todayStr}.tsv`; link.click();
         }
@@ -954,14 +1076,17 @@
                     let importedTasks = Array.isArray(imported) ? imported : imported.tasks; 
                     if(imported.settings && currentUserRole === 'CEO') companySOP = imported.settings; 
                     
-                    let uc=0, nc=0; 
+                    let uc=0, nc=0, changed=false; 
                     if(importedTasks) {
                         importedTasks.forEach(inc => { 
                             const idx = tasks.findIndex(t => t.id === inc.id); 
-                            if(idx > -1) { if(!tasks[idx].lastUpdated || inc.lastUpdated > tasks[idx].lastUpdated) { tasks[idx] = inc; uc++; } } 
-                            else { tasks.push(inc); nc++; } 
+                            if(idx > -1) { 
+                                if(!tasks[idx].lastUpdated || inc.lastUpdated > tasks[idx].lastUpdated) { tasks[idx] = inc; uc++; changed = true; } 
+                            } else { tasks.push(inc); nc++; changed = true; } 
                         });
-                    } saveToDB(); showToast(`✅ Gộp thành công: ${uc} update, ${nc} mới.`); 
+                    } 
+                    if (changed) saveToDB(); 
+                    showToast(`✅ Gộp thành công: ${uc} update, ${nc} mới.`); syncWithCloud(true);
                 } catch (err) { showToast("⛔ File không hợp lệ!"); } 
             }; reader.readAsText(file);
         }
